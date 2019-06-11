@@ -1,0 +1,209 @@
+﻿$(function (){
+if($(window).width()<=1366 && (!!('ontouchend' in document) || navigator.userAgent.indexOf('Windows Phone') > 0)){
+$('body').addClass("pro_1366");
+}
+})
+
+
+var isSupportTouch = $(window).width() <= 1024;
+var getCirWidth,getCirWidthUl;
+
+var dotCount = 0;
+var dotClickCount=0;
+
+$(function () {
+    var bannerTimer = null;
+    var bannerTimeout = null;
+var banner_interval=null;
+    var movetime = 2000;
+    var moveSpeed = 1500;
+    var bannerSize = $(".in_banner li").size();
+	var moveLength=$(window).width();
+	var dir=1;
+	
+	$(window).resize(function(){
+		moveLength=$(window).width();
+		$(".in_banner").height(moveLength*0.3886);
+		$(".in_banner li").css({ "width": $(".in_banner").width(), "float": "left", "position": "absolute" });
+		$(".in_banner ul").css({ "width": $(".in_banner").width() * bannerSize, "overflow": "hidden", "position": "relative" });
+	})
+	
+	$(window).resize();
+	
+	
+	
+    $(".in_banner").append('<a href="javascript:void(0)" class="banner_left"></a><a href="javascript:void(0)" class="banner_right"></a>');
+    $(".in_banner").append('<dl></dl>');
+    for (var i = 0; i < $(".in_banner li").size() ; i++) {
+        $(".in_banner dl").append('<dd></dd>');
+    }
+    $(".in_banner dl dd:first").addClass("active");
+    $(".in_banner li").eq(0).addClass("curr");
+	
+	$(document).on("click",".in_banner dl dd",function(){
+		if(!$(".in_banner ul").is(":animated")){
+				clearInterval(bannerTimer);
+				var nIndex=$(".in_banner dl dd").index(this);
+				dotClickCount=nIndex;
+				if(nIndex > dotCount){
+					$(".in_banner li:eq("+nIndex+")").css({"left":moveLength});
+					$(".in_banner ul").stop().animate({"left":moveLength*-1},1000,function(){
+						$(".in_banner li").css({"left":0}).removeClass("curr");
+						$(".in_banner li:eq("+nIndex+")").css({"left":0}).addClass("curr");
+						
+						$(".in_banner ul").css({"left":0});
+					});
+					dotCount=nIndex;
+				}else if(nIndex < dotCount){
+					$(".in_banner ul").css({"left":moveLength*-1});
+					$(".in_banner li").css({"left":0}).removeClass("curr");
+					$(".in_banner li:eq("+nIndex+")").css({"left":0}).addClass("curr");
+					$(".in_banner li:eq("+dotCount+")").css({"left":moveLength});
+					$(".in_banner ul").stop().animate({"left":0},1000,function(){
+						$(".in_banner li").css({"left":0}).removeClass("curr");
+						$(".in_banner li:eq("+nIndex+")").css({"left":0}).addClass("curr");
+						
+						$(".in_banner ul").css({"left":0});
+					});	
+					dotCount=nIndex;
+				}
+				$(".in_banner dl dd:eq("+nIndex+")").removeClass("actove").addClass("active").siblings().removeClass();
+				if(dotClickCount==bannerSize-1){
+					//alert(1);
+					clearInterval(bannerTimer);
+							try{
+							document.getElementById("media_banner").currentTime =0;
+                            }catch(e){}
+							document.getElementById("media_banner").play();
+							
+							banner_interval=setInterval(function () {
+								movetime = (document.getElementById("media_banner").duration - 1) * 1000;
+								if(!isNaN(movetime)){
+									clearInterval(banner_interval);
+									bannerTimer = setInterval(function () {
+										$(".banner_right").click();
+									}, movetime)
+								}
+							},10)
+						
+				}else{
+					document.getElementById("media_banner").pause();
+					movetime=2000;
+					bannerTimer = setInterval(function () {
+										$(".banner_right").click();
+									}, movetime)
+				}
+				
+		}
+	})
+	
+    //{ easing: 'easeInQuint', duration: 600 }
+    if ($(".in_banner li").size() > 1) {
+        $(".banner_right").on("click",function() {
+			if(!$(".in_banner ul").is(":animated")){
+				clearInterval(bannerTimer);
+				dir=1;
+				if(dotClickCount >= bannerSize-1){
+					dotClickCount=0;
+					right_click(dotClickCount);
+				}else{
+					dotClickCount++;
+					right_click(dotClickCount);
+				}
+			}   
+        })
+		
+		$(".banner_left").on("click",function() {
+			if(!$(".in_banner ul").is(":animated")){
+				clearInterval(bannerTimer);
+				dir=0;
+				if(dotClickCount <= 0){
+					dotClickCount=bannerSize-1;
+					left_click(dotClickCount);
+				}else{
+					dotClickCount--;
+					left_click(dotClickCount);
+				}
+			}   
+        })
+
+    }
+	
+	function right_click(nIndex){
+		$(".in_banner li:eq("+nIndex+")").css({"left":moveLength});
+		$(".in_banner ul").stop().animate({"left":moveLength*-1},1000,function(){
+			$(".in_banner li").css({"left":0}).removeClass("curr");
+			$(".in_banner li:eq("+nIndex+")").css({"left":0}).addClass("curr");
+			
+			$(".in_banner ul").css({"left":0});
+		});
+		dotCount=nIndex;	
+		$(".in_banner dl dd:eq("+nIndex+")").removeClass("actove").addClass("active").siblings().removeClass();
+		if(dotClickCount==bannerSize-1){
+			clearInterval(bannerTimer);
+            try{
+                document.getElementById("media_banner").currentTime =0;
+            }catch(e){}
+							document.getElementById("media_banner").play();
+							
+							banner_interval=setInterval(function () {
+								movetime = (document.getElementById("media_banner").duration - 1) * 1000;
+								if(!isNaN(movetime)){
+									clearInterval(banner_interval);
+									
+									bannerTimer = setInterval(function () {
+										$(".banner_right").click();
+									}, movetime)
+								}
+							},10)
+		}else{
+			document.getElementById("media_banner").pause();
+			movetime=2000;
+			bannerTimer = setInterval(function () {
+										$(".banner_right").click();
+									}, movetime)
+		}
+	}
+	
+	function left_click(nIndex){
+		$(".in_banner ul").css({"left":moveLength*-1});
+		$(".in_banner li").css({"left":0}).removeClass("curr");
+		$(".in_banner li:eq("+nIndex+")").css({"left":0}).addClass("curr");
+		$(".in_banner li:eq("+dotCount+")").css({"left":moveLength});
+		$(".in_banner ul").stop().animate({"left":0},1000,function(){
+			$(".in_banner li").css({"left":0}).removeClass("curr");
+			$(".in_banner li:eq("+nIndex+")").css({"left":0}).addClass("curr");
+			
+			$(".in_banner ul").css({"left":0});
+		});	
+		dotCount=nIndex;
+		$(".in_banner dl dd:eq("+nIndex+")").removeClass("actove").addClass("active").siblings().removeClass();
+		if(dotClickCount==bannerSize-1){
+			clearInterval(bannerTimer);
+            try{
+                document.getElementById("media_banner").currentTime =0;
+            }catch(e){}
+							document.getElementById("media_banner").play();
+							
+							banner_interval=setInterval(function () {
+								movetime = (document.getElementById("media_banner").duration - 1) * 1000;
+								if(!isNaN(movetime)){
+									clearInterval(banner_interval);
+									bannerTimer = setInterval(function () {
+										$(".banner_right").click();
+									}, movetime)
+								}
+							},10)
+		}else{
+			document.getElementById("media_banner").pause();
+			movetime=2000;
+		}
+	}
+
+    bannerTimer = setInterval(function () {
+        $(".banner_right").click();
+    }, movetime)
+})
+
+
+

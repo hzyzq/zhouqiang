@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>vue中的内置组件</title>
+    <script src="./vue.js"></script>
+</head>
+<body>
+    <div id="app">
+
+    </div>
+    <script>
+        /* Vue.component("myli",{
+            template:`
+                <li>1</li>
+            `
+        }); */
+        let myli={
+            template:`
+                <li>
+                    <slot name="one" />
+                    <slot name="two" />
+                </li>
+            `
+        }
+        let App={
+            components:{
+                myli,
+            },
+            template:`
+                <ul>
+                    <myli>
+                        <div slot="one">
+                            <span >11111</span>    
+                            <a>2222</a>
+                        </div>  
+                        <div slot="two">
+                            <span >333</span>    
+                            <a>444</a>
+                        </div>  
+                    </myli>
+                </ul>
+            `
+        }
+        var vm = new Vue({
+            el:'#app',
+            data:()=>({}),
+            components:{
+                App,
+            },
+            template:"<App />"
+        });
+    </script>
+</body>
+</html>

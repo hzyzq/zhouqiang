@@ -1,0 +1,308 @@
+var this_url = window.location.href;
+var regemail = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
+var regtelphone = /((\d{11})|^((\d{7,8})|(\d{4}|\d{3})-(\d{7,8})|(\d{4}|\d{3})-(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1})|(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1}))$)/;
+var regnum = /^\d+$/;
+var regPcode = /^\d{6}$/;
+var regUrl = /^(http|https):\/\/(.+?)\.(.+)/;
+
+function getValue(obj) {
+    return $.trim($(obj).val());
+}
+
+function IsNum(obj, obj2) {
+    if (!regnum.test($(obj).val())) {
+        $(obj).val(obj2);
+    }
+}
+
+$(function () {
+    $('.isNum').keyup(function () {
+        IsNum(this, 1);
+    });
+});
+
+var required = function () {
+    var goon = true;//是否继续循环
+    var IsRunReg = false;//是否执行正在验证
+    $('.get:visible').map(function () {
+        if (goon) {
+            IsRunReg = false;
+            var val = getValue($(this));
+            var placeholder = $(this).attr('placeholder');
+            if ($(this).hasClass('required')) {
+                if (val.length == 0 || $(this).val() == placeholder) {
+                    if (placeholder != '' && placeholder != undefined) {
+                        alert(placeholder);
+                    } else {
+                        alert('请输入必填信息!');
+                    }
+                    $(this).focus();
+                    goon = false;
+                } else if (val.length == 1 && val == "0") {
+                    var placeholder = $(this).attr('placeholder');
+                    if (placeholder != '') {
+                        alert(placeholder);
+                    } else {
+                        alert('请输入必填信息!');
+                    }
+                    $(this).focus();
+                    goon = false;
+                }
+                IsRunReg = true;
+            }
+            if (!goon) {
+                return false;
+            }
+            if (!IsRunReg) {
+                if (val != undefined && val.length > 0 && val != placeholder) {
+                    IsRunReg = true;
+                }
+            }
+            if ($(this).hasClass('tel')) {
+                if (IsRunReg&&!regtelphone.test($(this).val())) {
+                    alert('您输入电话的格式错误!');
+                    $(this).focus();
+                    goon = false;
+                }
+            } else if ($(this).hasClass('email')) {
+                if (IsRunReg && !regemail.test($(this).val())) {
+                    alert('您输入邮箱的格式错误!');
+                    $(this).focus();
+                    goon = false;
+                }
+            } else if ($(this).hasClass('postalcode')) {
+                if (IsRunReg && !regPcode.test($(this).val())) {
+                    alert('您输入的邮政编码格式不正确!');
+                    $(this).focus();
+                    goon = false;
+                }
+            } else if ($(this).hasClass('number')) {
+                if (IsRunReg && !regnum.test($(this).val())) {
+                    alert('您输入的不是正整数!');
+                    $(this).focus();
+                    goon = false;
+                }
+                if (IsRunReg && $(this).attr('min')) {
+                    if (Number($(this).val().length) < Number($(this).attr('min'))) {
+                        alert('您输入的值过小!');
+                        $(this).focus();
+                        goon = false;
+                    }
+                }
+                if (IsRunReg && $(this).attr('max')) {
+                    if (Number($(this).val().length) > Number($(this).attr('max'))) {
+                        alert('您输入的值过大!');
+                        $(this).focus();
+                        goon = false;
+                    }
+                }
+            } else if ($(this).hasClass('weburl')) {
+                if (IsRunReg && !regUrl.test($(this).val())) {
+                    alert('您输入的网址格式不正确!');
+                    $(this).focus();
+                    goon = false;
+                }
+            }
+        }
+    });
+    return goon;
+}
+
+var required1 = function () {
+    var goon = true;//是否继续循环
+    var IsRunReg = false;//是否执行正在验证
+    $('.get1:visible').map(function () {
+        if (goon) {
+            IsRunReg = false;
+            var val = getValue($(this));
+            var placeholder = $(this).attr('placeholder');
+            if ($(this).hasClass('required')) {
+                if (val.length == 0 || $(this).val() == placeholder) {
+                    if (placeholder != '' && placeholder != undefined) {
+                        alert(placeholder);
+                    } else {
+                        alert('请输入必填信息!');
+                    }
+                    $(this).focus();
+                    goon = false;
+                } else if (val.length == 1 && val == "0") {
+                    var placeholder = $(this).attr('placeholder');
+                    if (placeholder != '') {
+                        alert(placeholder);
+                    } else {
+                        alert('请输入必填信息!');
+                    }
+                    $(this).focus();
+                    goon = false;
+                }
+                IsRunReg = true;
+            }
+            if (!goon) {
+                return false;
+            }
+            if (!IsRunReg) {
+                if (val != undefined && val.length > 0 && val != placeholder) {
+                    IsRunReg = true;
+                }
+            }
+            if ($(this).hasClass('tel')) {
+                if (IsRunReg&&!regtelphone.test($(this).val())) {
+                    alert('您输入电话的格式错误!');
+                    $(this).focus();
+                    goon = false;
+                }
+            } else if ($(this).hasClass('email')) {
+                if (IsRunReg && !regemail.test($(this).val())) {
+                    alert('您输入邮箱的格式错误!');
+                    $(this).focus();
+                    goon = false;
+                }
+            } else if ($(this).hasClass('postalcode')) {
+                if (IsRunReg && !regPcode.test($(this).val())) {
+                    alert('您输入的邮政编码格式不正确!');
+                    $(this).focus();
+                    goon = false;
+                }
+            } else if ($(this).hasClass('number')) {
+                if (IsRunReg && !regnum.test($(this).val())) {
+                    alert('您输入的不是正整数!');
+                    $(this).focus();
+                    goon = false;
+                }
+                if (IsRunReg && $(this).attr('min')) {
+                    if (Number($(this).val().length) < Number($(this).attr('min'))) {
+                        alert('您输入的值过小!');
+                        $(this).focus();
+                        goon = false;
+                    }
+                }
+                if (IsRunReg && $(this).attr('max')) {
+                    if (Number($(this).val().length) > Number($(this).attr('max'))) {
+                        alert('您输入的值过大!');
+                        $(this).focus();
+                        goon = false;
+                    }
+                }
+            } else if ($(this).hasClass('weburl')) {
+                if (IsRunReg && !regUrl.test($(this).val())) {
+                    alert('您输入的网址格式不正确!');
+                    $(this).focus();
+                    goon = false;
+                }
+            }
+        }
+    });
+    return goon;
+}
+
+// 附件上传成功回调
+var uploadsuccess = function(newpath, area) {
+$(area + " .ViewSpan").html("<a class='view View' target='_blank' href='#'>查看</a> <a href=\"javascript:void\" class='again' onclick='re_upload_file(\"" + area + "\")' >重新上传</a>");
+$(area + " .UploadFrame").hide();
+$(area + " .FileName").val(newpath);
+$(area + " .View").attr("href", '../' + newpath);
+};
+function re_upload_file(area) {
+$(area + " .UploadFrame").attr("src", "../statics/Ajax/Plugin/uploadImg.html?area=" + area).show();
+$(area + " .ViewSpan").html("");
+$(area + " .FileName").val("");
+}
+$(function () {
+    $('#btnSubmit').click(function () {
+        /*如果通过表单验证*/
+        if (required1()) {
+            var attrArgs = new Array();/*参数名称集合*/
+            var valArgs = new Array();/*参数值集合*/
+            $('.get1:visible').map(function (i) {
+                if (getValue($(this)).length != 0) {
+                    attrArgs[i] = $(this).attr('name');
+                    valArgs[i] = escape(getValue($(this)));
+                }
+            });
+            var data = "cmd=insertForm&attrArgs=" + attrArgs + "&valArgs=" + valArgs + "";
+            ajaxhelpForm1(data, function (msg) {
+                var obj = eval('(' + msg + ')');
+                alert(unescape(obj.info));
+                if (unescape(obj.status) == 1) {
+                    window.location = this_url;
+                }
+            });
+        }
+    });
+	$('#btnSubmit1').click(function () {
+        /*如果通过表单验证*/
+        if (required()) {
+            var attrArgs = new Array();/*参数名称集合*/
+            var valArgs = new Array();/*参数值集合*/
+            $('.get:visible').map(function (i) {
+                if (getValue($(this)).length != 0) {
+                    attrArgs[i] = $(this).attr('name');
+                    valArgs[i] = escape(getValue($(this)));
+                }
+            });
+            var data = "cmd=insertForm&attrArgs=" + attrArgs + "&valArgs=" + valArgs + "";
+            ajaxhelpForm(data, function (msg) {
+                var obj = eval('(' + msg + ')');
+                alert(unescape(obj.info));
+                if (unescape(obj.status) == 1) {
+                    window.location = this_url;
+                }
+            });
+        }
+    });
+});
+function ajaxhelpForm(data, fn) {
+        $.ajax({
+            "type": "post",
+            "url": "../index.php?m=Forms&a=ValidateHandler",
+            "data": data,
+            "datatype": "html",
+            "success": function (msg) {
+                if (fn) {
+                    fn(msg);
+                }
+            },
+            "error": function () {
+                /*alert("对不起,服务器繁忙请稍后重试");*/
+            }
+        });
+    }
+	
+
+function ajaxhelpForm1(data, fn) {
+        $.ajax({
+            "type": "post",
+            "url": "../index.php?m=Forms&a=ValidateHandler1",
+            "data": data,
+            "datatype": "html",
+            "success": function (msg) {
+                if (fn) {
+                    fn(msg);
+                }
+            },
+            "error": function () {
+                /*alert("对不起,服务器繁忙请稍后重试");*/
+            }
+        });
+    }
+
+function onbtnSubmit(formid){
+    $('#myform').form('submit', {
+        url:"../index.php?m=Forms&a=ValidateHandler",   
+        onSubmit: function(){   
+            return required();
+            return $(this).form('validate');
+        },
+        success:function(data){
+            var data = eval('(' + data + ')');
+            alert(data.info);
+            if (data.status==1) {
+                window.location = this_url;
+            }
+        }
+    });
+}
+
+function changeCode(){
+	document.getElementById('forget_code_img').src='../api.php?m=Checkcode&code_len=4&font_size=14&width=88&height=37&font_color=&background=&time='+Math.random();
+}

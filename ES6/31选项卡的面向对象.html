@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        ul,li{margin:0; padding: 0;}
+        ul{list-style: none;}
+        a{text-decoration: none;}
+        .nav{ width: 400px; border: 1px solid #ccc; margin:50px auto; background: #eee;}
+        .nav ul{overflow: hidden; border-bottom: 1px solid #ccc;}
+        .nav li{float: left; margin-right:10px;}
+        .nav li a{display: block; padding: 10px; background: lawngreen;}
+        .content{}
+        .pane{height: 300px; display: none;}
+    </style>
+</head>
+<body>
+    <div class="tab1 nav">
+        <ul>
+            <li><a href="">html</a></li>
+            <li><a href="">css</a></li>
+            <li><a href="">js</a></li>
+        </ul>
+        <div class="content">
+            <div class="pane" style="display: block;">HTML</div>
+            <div class="pane">CSS</div>
+            <div class="pane">JS</div>
+        </div>
+    </div>
+    <div class="tab2 nav">
+        <ul>
+            <li><a href="">html</a></li>
+            <li><a href="">css</a></li>
+            <li><a href="">js</a></li>
+        </ul>
+        <div class="content">
+            <div class="pane" style="display: block;">HTML</div>
+            <div class="pane">CSS</div>
+            <div class="pane">JS</div>
+        </div>
+    </div>
+    <script>
+//面向过程        
+        /* let oNav=document.querySelector('.nav');
+        let aLink=oNav.querySelectorAll('a');
+        let aPane=oNav.querySelectorAll('.pane');
+        for(let i=0; i<aLink.length; i++){
+            aLink[i].onclick=function(){
+                for(let j=0; j<aPane.length; j++){
+                    aPane[j].style.display="none";
+                }
+                aPane[i].style.display="block";
+                return false;
+            }
+        } */
+
+//-----------------------------------------------------------        
+        /*
+           1.把全局变量变成对象的属性
+           2.把函数变成对象的方法
+        */
+//-------------------------------------------------------------        
+//es5        
+        /* function Tab(tab,a,pane,ev){
+            this.oNav=document.querySelector(tab);
+            this.aLink=this.oNav.querySelectorAll(a);
+            this.aPane=this.oNav.querySelectorAll(pane);
+            this.ev=ev;
+        }
+        Tab.prototype.fnTab=function(){
+            for(let i=0; i<this.aLink.length; i++){
+                //let This=this;
+                this.aLink[i][this.ev]=()=>{
+                    for(let j=0; j<this.aPane.length; j++){
+                        this.aPane[j].style.display="none";
+                    }
+                    this.aPane[i].style.display="block";
+                    return false;
+                }
+            }
+        }
+        let t1=new Tab('.tab1','a','.pane','onclick');
+        let t2=new Tab('.tab2','a','.pane','onmouseover');
+        t1.fnTab();
+        t2.fnTab(); */
+//--------------------------------------------------------------       
+//es6
+        class Tab{
+            constructor(tab,a,pane,ev){
+                this.oNav=document.querySelector(tab);
+                this.aLink=this.oNav.querySelectorAll(a);
+                this.aPane=this.oNav.querySelectorAll(pane);
+                this.ev=ev;
+            }
+            fnTab(){
+                for(let i=0; i<this.aLink.length; i++){
+                    this.aLink[i][this.ev]=()=>{
+                        for(let j=0; j<this.aPane.length; j++){
+                            this.aPane[j].style.display="none";
+                        }
+                        this.aPane[i].style.display="block";
+                        return false;
+                    }
+                }
+            }
+        }
+        let t1=new Tab('.tab1','a','.pane','onclick');
+        let t2=new Tab('.tab2','a','.pane','onmouseover');
+        t1.fnTab();
+        t2.fnTab();
+    </script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+﻿;(function ($) {
+    var plugin = {};
+    var defaults = {
+        tiptxt: "已超出字数限制！"
+    };
+    $.fn.xhrtextares = function (options) {
+        var textares = {};
+        var el = this;
+        plugin.el = this;
+        var init = function () {
+            textares.settings = $.extend({}, defaults, options);
+            el.find("textarea").bind("focus blur keydown keyup change input propertychange", function (e) {
+                var total_len = getStrLength($(this).val());
+                var max_word = $(this).data("max-word");
+                //console.log(total_len);
+                el.find(".tip-i").text(max_word - total_len);
+            })
+
+
+        }
+
+        var getStrLength = function (sStr) { // 获取字符长度 （以中文字符长度为基准）
+            var aMatch = sStr.match(/[^\x00-\x80]/g),
+                strlen = (sStr.length + (!aMatch ? 0 : aMatch.length));
+            return strlen = Math.ceil(strlen / 2);
+        }
+
+        init();
+    }
+
+})(jQuery);
+
+

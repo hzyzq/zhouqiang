@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        var obj={a:1,b:2}
+        var arr=['a','b','c','d'];
+        var s=new Set(arr);
+        console.log(s);
+        // add  delete  clear   has  keys  values  entries
+        //console.log(Object.values(s));
+        /* var jm=s.keys();
+        console.log(jm.next().value);
+        console.log(jm.next());
+        console.log(jm.next());
+        console.log(jm.next());
+        console.log(jm.next()); */
+
+        /* var vl=s.values();
+        console.log(vl.next());
+        console.log(vl.next());
+        console.log(vl.next());
+        console.log(vl.next());
+        console.log(vl.next()); */
+
+        var en=s.entries();
+        console.log(en);
+        console.log(en.next().value[1]);
+        console.log(en.next());
+        console.log(en.next());
+        console.log(en.next());
+        console.log(en.next());
+    </script>
+</body>
+</html>

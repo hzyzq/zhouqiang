@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        /* 
+        body{margin:inherit}
+        <!-- 继承：
+            1.父子（祖孙）关系
+            2.默认继承
+            3.强制继承 inherit
+            4.冲突 
+        --> 
+      */
+    </style>
+</head>
+<body>
+    <script>
+        /* Fn.length
+        F.call()
+        F.apply() */
+
+
+        /* function Fn(){}
+        var f=new Fn();
+        Fn.prototype.name="lc";
+        console.log(Fn.prototype);
+        console.log(f.__proto__);
+        console.log(Fn.prototype.__proto__.__proto__);
+        console.log(f.__proto__.__proto__.__proto__); */
+
+
+        /* function Fn(){
+            //this.name="zs";
+        }
+        //Fn.prototype.name="lc";
+        //Object.prototype.name="ww";
+        Object.prototype.name=function(){return 5};
+        let f=new Fn();
+
+        console.log(f.name()); */
+
+//原型对象下的属性和方法
+        function Fn(){
+            'aaa'
+        }
+        //console.log(Fn.prototype);
+        //console.log(Fn.prototype.constructor);
+        /* let f=new Fn();
+        console.log(f.constructor===Fn);
+        console.log(f.constructor===Object);
+console.log(Fn.prototype.__proto__.constructor===Object);
+
+
+console.log("-----------")
+
+
+        var arr=new Array();
+        console.log(arr.constructor===Array);
+        console.log(Array.prototype.constructor===Array)
+console.log(Array.prototype.__proto__.constructor===Object) */
+        /* var obj={};
+        console.log(obj.constructor);//Object
+        var arr=[];
+        console.log(arr.constructor);//Array */
+
+
+        /* function Fn(){};
+        Fn.prototype.name="lc";
+        Fn.prototype.age=30;
+        Fn.prototype.sex="man";
+        let f1=new Fn();
+        console.log(f1.constructor); */
+
+        /* function Fn(){};
+        
+        Fn.prototype={
+            constructor:Fn,
+            name:"lc",
+            age:30,
+            sex:"man"
+        }
+        
+        let f1=new Fn();
+        console.log(f1.constructor===Fn); */
+
+
+        /* function Fn(){
+
+        }
+        //Fn.prototype={constructor:Fn,name:'lc'};
+        Fn.prototype.name="lc";
+        Fn.prototype.age=30;
+        for(var attr in Fn.prototype){
+            console.log(Fn.prototype[attr]);
+        }
+        var f=new Fn();
+        console.log(Fn.prototype);
+        console.log(Fn.prototype.hasOwnProperty('sex'));
+        console.log(Fn.prototype.hasOwnProperty('age'));
+        console.log(f.hasOwnProperty('sex'));
+        console.log(f.hasOwnProperty('age'));
+        console.log(Fn.prototype.__proto__); */
+
+        /* var obj={name:'lc'}
+Object.prototype.name="abc";
+console.log(obj.hasOwnProperty==Object.prototype.hasOwnProperty);//?
+console.log(obj.hasOwnProperty('name'));//?
+console.log(Object.prototype.hasOwnProperty('name'));//? */
+
+
+    </script>
+</body>
+</html>

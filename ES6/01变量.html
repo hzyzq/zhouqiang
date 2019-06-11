@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        li{
+            border:1px solid red;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <ul>
+        <li>html</li>
+        <li>css</li>
+        <li data-qq="55" data-xm-zs="张三">js</li>
+        <li>jq</li>
+        <li>bootstrap</li>
+    </ul>
+    <script>
+        /* console.log(a);
+        var a=5; */
+
+        /* var a=5;
+        var a=6; */
+
+        /* var a=15;
+        var alert=20;
+        alert('aaa');
+        console.log(window.alert); */
+
+        /* console.log(a);
+        let a=5;
+        a=10; */
+
+        /* {
+            let a=55;
+        }
+        let a=66;
+        console.log(a); */
+
+        /* function fn()
+        {
+            var a=5;
+            function fn2(){
+                alert(a++);
+            }
+            fn2();
+            return fn2;
+        }
+        var fn3=fn();//5
+        fn3();//6
+        fn3();//7 */
+
+        let aLi=document.querySelectorAll('li');
+        /* for(var i=0; i<aLi.length; i++)
+        {
+            aLi[i].onclick=function()
+            {
+                alert(i);
+            }
+        } */
+
+        /* for(var i=0; i<aLi.length; i++)
+        {
+            aLi[i].index=i;
+            aLi[i].onclick=function()
+            {
+                alert(this.index);
+            }
+        } */
+
+        /* for(var i=0; i<aLi.length; i++)
+        {
+            aLi[i].dataset.index=i;
+            aLi[i].onclick=function()
+            {
+                alert(this.dataset.index);
+            }
+        }
+        aLi[2].dataset.qq=66;
+        alert(aLi[2].dataset.xmZs); */
+
+        /* for(var i=0; i<aLi.length; i++)
+        {
+            aLi[i].onclick=(function(j){
+                return function()
+                {
+                    alert(j);
+                }
+            })(i);
+        } */
+
+        /* for(var i=0; i<aLi.length; i++)
+        {
+            (function(i){
+                aLi[i].onclick=function()
+                {
+                    alert(i);
+                }
+            })(i)
+        } */ 
+
+        for(let i=0; i<aLi.length; i++)
+        {
+            aLi[i].onclick=function()
+            {
+                alert(i);
+            }
+        }
+
+    </script>
+</body>
+</html>

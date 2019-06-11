@@ -1,0 +1,1145 @@
+// JavaScript Document
+$(function () {
+    $('input[type=text],textarea,input[type=password]').keyup(function () {
+        var val = $(this).val().toLocaleLowerCase();
+        var otherKey = " and | exec | count | chr | mid | master | or | truncate | char | declare | join |<|>|*|/*|*/|;|\\u|insert|select|delete|update|create|drop|script|javascript|alert";
+        var goon = true;
+        for (var i = 0; i < otherKey.split('|').length ; i++) {
+            if (goon) {
+                if (val.indexOf(otherKey.split('|')[i]) != -1) {
+                    alert("不要包含危险字符!");
+                    $(this).val('');
+                    goon = false;
+                    return;
+                }
+            }
+        }
+    });
+})
+
+function changeCode1(){
+	document.getElementById('forget_code_img').src='../api.php?m=Checkcode&code_len=4&font_size=14&width=79&height=28&font_color=&background=&time='+Math.random();
+}
+
+function changeCode2(){
+	document.getElementById('forget_code_img1').src='../api.php?m=Checkcode&code_len=4&font_size=14&width=79&height=28&font_color=&background=&time='+Math.random();
+}
+var dest='';
+var designid='';
+var planid='';
+$(function(){
+	$.ajax({
+		type: "post",
+		url: "../index.php?g=Member&m=Index&a=public_islogin",
+		success: function (msg) {
+			var obj = eval('(' + msg + ')');
+			if(obj.userid>0){
+				if(obj.checkmobile==1){
+					$("#phone_ischeck").css("display","block");
+					$(".phone_ischeck").css("display","none");
+				}
+				$("#user_nickname").html(obj.nickname);
+				if(obj.role==1){
+					var role="经销商";
+				}else if(obj.role==3){
+					$("#personal_manage").css("display","none");
+					var role="店员";	
+				}else{
+					$(".banner_case_menu1").attr("href","javascript:alert('您没有此功能的权限！');");
+					$("#personal_manage").css("display","none");
+					$(".role_display_none").css("display","none");
+					$(".forget_personal_right_white").css("display","none");
+					var role="设计师";	
+				}
+				$("#user_role").html(role);
+				$("#user_email").html(obj.email);
+				$("#user_mobile").html(obj.mobile);
+				$("#user_address").html(obj.city+" "+obj.county+" "+obj.address);
+				$("#user_company").html(obj.company);
+				$("#input_company").val(obj.company);
+				$("#input_mobile").val(obj.mobile);
+				$("#input_city").val(obj.city);
+				$("#input_county").val(obj.county);
+				$("#b_city").html(obj.city);
+				$("#b_county").html(obj.county);
+				$("#input_address").val(obj.address);
+				$("#userid").val(obj.userid);
+				$("#public_userid").val(obj.userid);
+				$(".header_right_box_pic1").attr("class","header_right_box_pic1");
+				$(".header_right_icon1").addClass("on");
+				//$("#NewDesign").attr("href",'http://www.kujiale.com/v/auth?accesstoken='+obj.token+'&dest=4');
+				$("#kujiale_iframe").attr("src",'http://www.kujiale.com/v/auth?accesstoken='+obj.token+'&dest=4');
+				$(".header_outer_title em").text(obj.nickname);
+				
+				
+				if(dest=='1'){
+					$("#kujiale_iframe_modify").attr("src","http://www.kujiale.com/v/auth?accesstoken="+obj.token+"&dest=1&designid="+designid);
+				}
+				if(dest=='2'){
+					$("#kujiale_iframe_modify").attr("src","http://www.kujiale.com/v/auth?accesstoken="+obj.token+"&dest=2&planid="+planid);
+				}
+				
+			}else{
+				$("#public_userid").val(0);
+				$(".header_right_box_pic1").attr("class","header_right_box_pic1 login_a");
+				//$(".header_right_box_pic1").attr("href","javascript:void(0)");
+				$(".header_right_icon1").removeClass("on");
+				$(".banner_case_menu1").attr("href",'javascript:login_user();');
+				//$(".header_outer_bg").css("display","none");
+			}
+		}
+	})
+})
+
+function login_user(){
+	$(".login_a").click();	
+}
+
+//点赞
+$(document).on('click', '.Mylike_case', function (e) {
+	e.stopPropagation();
+	e.preventDefault();
+	var strid = $(this).attr("data-id");//ID
+	//var stremid = $(this).parents('.AForm').find('.Mylikelist');//存放点赞次数的容器
+	//var num=$(this).attr("data-num");
+	var objMylike = $(this);
+	data = "id=" + strid;
+	$.ajax({
+		type: "post",
+		url: "../index.php?a=zan",
+		data:data,
+		success: function (msg) {
+			var obj = eval('(' + msg + ')');
+			if(obj.status==1){
+				numzan=Number(objMylike.text())+Number(1);
+				objMylike.text(numzan);
+				$(this).addClass("on");
+				$(".Mylike_case").map(function(){
+					if($(this).data("id")==strid){
+						$(this).text(numzan);	
+					}	
+				})
+			}
+		}
+	})
+});
+//获取点赞次数
+$(function(){
+	var ids = '';
+    $('.Mylike_case').map(function () {
+        ids+=$(this).attr('data-id') + ',';
+    });
+    if (ids.length == 0) {
+        return false;
+    }
+    data="ids="+ids;
+	$.ajax({
+        type: "post",
+        url: "../index.php?a=getzannum",
+        data:data,
+        success: function (msg) {
+            var obj = eval('(' + msg + ')');
+			var hits=(obj.info);
+			var length=hits.split(',').length;
+			if(length>1){
+				for (var i = 0; i < length; i++) {
+					$('.Mylike_case').eq(i).text(hits.split(',')[i]);
+				}
+			}else{
+				$('.Mylike_case').text(obj.info);	
+			}
+        }
+    })		
+})
+
+//浏览次数
+$(document).on('click', '.click_num', function () {
+	var strid = $(this).attr("data-id");//ID
+	var objMylike = $(this).siblings('.case-new-icon').find(".click_case");//存放点赞次数的容器
+	data = "id=" + strid;
+	$.ajax({
+		type: "post",
+		url: "../index.php?a=clicknum",
+		data:data,
+		success: function (msg) {
+			var obj = eval('(' + msg + ')');
+			if(obj.status==1){
+				numzan=Number(objMylike.text())+Number(1);
+				objMylike.text(numzan);
+				$(this).addClass("on");
+				$(".click_num").map(function(){
+					if($(this).data("id")==strid){
+						$(this).siblings('.case-new-icon').find(".click_case").text(numzan);
+						$(this).find(".click_case").text(numzan);	
+					}	
+				})
+			}
+		}
+	})
+});
+
+//获取浏览次数
+$(function(){
+	var ids = '';
+    $('.click_num').map(function () {
+        ids+=$(this).attr('data-id') + ',';
+    });
+    if (ids.length == 0) {
+        return false;
+    }
+    data="ids="+ids;
+	$.ajax({
+        type: "post",
+        url: "../index.php?a=getclicknum",
+        data:data,
+        success: function (msg) {
+            var obj = eval('(' + msg + ')');
+			var hits=(obj.info);
+			var length=hits.split(',').length;
+			if(length>1){
+				for (var i = 0; i < length; i++) {
+					$('.click_case').eq(i).text(hits.split(',')[i]);
+				}
+			}else{
+				$('.Mylike_case').text(obj.info);
+			}
+        }
+    })		
+})
+
+
+//获取用户所有数据
+function getdata(){
+	$.ajax({
+		type: "post",
+		url: "../index.php?g=Member&m=Index&a=getdata",
+		data:{
+            pageindex:1,
+            pagesize:4
+        },
+		success: function (msg) {
+			var obj = eval('(' + msg + ')');
+			
+			$("#kubi_num").html(obj.Kubi);
+			$("#kjl_userdata").html(obj.ListHtml);
+			$("#AjaxDesignList").html(obj.PageHtml);
+			$("#pcaseuser").html(obj.pcuser);
+		}
+	})	
+}
+
+//获取当前登录会员的店员信息
+function getDianyan(){
+	$.ajax({
+		type: "post",
+		url: "../index.php?g=Member&m=Index&a=getdianyuan",
+		success: function (msg) {
+			var obj = eval('(' + msg + ')');
+			$("#table_dianyuan").html(obj.ListHtml);
+		}
+	})	
+}
+var uid='';
+//获取当前查看会员的所有设计方案
+function getdesign_curuser(uid){
+	$.ajax({
+		type: "post",
+		url: "../index.php?g=Member&m=Index&a=getcuruser_design",
+		data:{
+            pageindex:1,
+            pagesize:4,
+			uid:uid
+        },
+		success: function (msg) {
+			var obj = eval('(' + msg + ')');
+			$("#pcase_list").html(obj.ListHtml);
+			$("#pcase_uname").html(obj.uname+"的设计方案");
+			$("#pcase_page").html(obj.PageHtml);
+			$("#pcaseuser").html(obj.pcuser);
+		}
+	})	
+}
+
+$(document).on("click",".pcase_fenpei",function(){
+	$(".new_outer1,.new_outer_bg1").fadeIn();
+	$(".new_outer1 #pcase_planid").attr("value",$(this).data("rel"));	
+})
+$(document).on("click",".case_cancel,.new_outer_close1",function(){
+	$(".new_outer1,.new_outer_bg1").fadeOut();	
+})
+$(document).on("click",".case_true",function(){
+	var touid=$("#pcaseuser>li.on").find("input").val();
+	var planid=$("#pcase_planid").val();
+	copyplan(touid,planid);	
+})
+
+function copyplan(appuid,planid){
+	$.ajax({
+		type: "post",
+		url: "../index.php?g=Member&m=Index&a=copy_plan",
+		data:{
+            appuid:appuid,
+            planid:planid
+        },
+		success: function (msg) {
+			var obj = eval('(' + msg + ')');
+			alert(obj.info);
+			$(".new_outer1,.new_outer_bg1").fadeOut();
+		}
+	})			
+}
+
+function getdesign_curuser1(pageindex){
+	$.ajax({
+		type: "post",
+		url: "../index.php?g=Member&m=Index&a=getcuruser_design",
+		data:{
+            pageindex:pageindex,
+            pagesize:4,
+			uid:uid
+        },
+		success: function (msg) {
+			var obj = eval('(' + msg + ')');
+			$("#pcase_list").html(obj.ListHtml);
+			$("#pcase_uname").html(obj.uname+"的设计方案");
+			$("#pcase_page").html(obj.PageHtml);
+			$("#pcaseuser").html(obj.pcuser);
+		}
+	})	
+}
+
+function getjxs(){
+	//获取经销商
+	$.ajax({
+		type: "post",
+		url: "../index.php?g=Member&m=Index&a=public_getaccount",
+		success: function (msg) {
+			var obj = eval('(' + msg + ')');
+			$(".select_person_box").html(obj.ListHtml1);
+		}
+	})		
+}
+
+$(function(){
+	$(document).on("click","#kubi_fenpei",function(){
+		var kubinum=$("#kubiNum").val();
+		if(kubinum==''){
+			alert("请输入酷币的分配数量！");
+			$("#kubiNum").focus();
+			return false;	
+		}else{
+			var regEx = /^[0-9]+$/gi;
+			if (!regEx.test(kubinum)) {
+				alert("不是合法数字");
+				$('#kubiNum').focus();
+				return false;
+			}	
+		}
+		var userid=$("#childId").val();
+		$.ajax({
+			type: "post",
+			url: "../index.php?g=Member&m=Index&a=public_fenpeikb",
+			data:{
+				kubiNum:kubinum,
+            	userid:userid	
+			},
+			success: function (msg) {
+				var obj = eval('(' + msg + ')');
+				if(obj.status=='success'){
+					alert("分酷成功！");
+					getDianyan();
+					$(".manage_outer,.manage_bg").fadeOut();
+				}else{
+					alert(obj.info);
+					getDianyan();
+					$(".manage_outer,.manage_bg").fadeOut();	
+				}
+			}
+		})		
+	})
+	
+	$(document).on("click",".menu_delete",function(){
+		var userid=$(this).data("userid");
+		$.ajax({
+			type: "post",
+			url: "../index.php?g=Member&m=Index&a=public_delete",
+			data:{
+            	userid:userid	
+			},
+			success: function (msg) {
+				var obj = eval('(' + msg + ')');
+				alert(obj.info);
+				getDianyan();
+			}
+		})	
+	})
+})
+
+function DesignPage(pageindex){
+	$.ajax({
+		type: "post",
+		url: "../index.php?g=Member&m=Index&a=getdata",
+		data:{
+            pageindex:pageindex,
+            pagesize:4
+        },
+		success: function (msg) {
+			var obj = eval('(' + msg + ')');
+			$("#kubi_num").html(obj.Kubi);
+			$("#kjl_userdata").html(obj.ListHtml);
+			$("#AjaxDesignList").html(obj.PageHtml);
+		}
+	})
+}
+
+//回车事件
+function EnterFunction(ElementInput, ElementBtn) {
+    $(ElementInput).keydown(function (e) {
+        var curKey = e.which;
+        if (curKey == 13) {
+            $(ElementBtn).click();
+        }
+    });
+}
+$(function () {
+    EnterFunction("#username", "#login_submit");
+	EnterFunction("#password", "#login_submit");
+})
+$(function(){
+	$("#login_submit").click(function(){
+		login_fun();
+	})
+})
+function login_fun(){
+	var username=$("#username").val();
+	var password=$("#password").val();
+	var password=str_encode(password);
+	var data="username="+username+"&password="+password;
+	$.ajax({
+		"type": "post",
+		"url": "../index.php?g=Member&m=Index&a=public_login",
+		"data":data,
+		success: function (msg) {
+			var obj = eval('(' + msg + ')');
+			alert(obj.info);
+			if(obj.status!=0){
+				window.location.href='../other/personal.html';
+			}
+		}
+	})
+}
+
+var regemail = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
+var regtelphone=/^(1[35847]\d{9})$/;
+
+$(document).on("click", "#sub", function () {
+	var nickname=$("input[name=nickname]").val();
+	var rpassword=$("input[name=rpassword]").val();
+	var qpassword=$("input[name=qpassword]").val();
+	var mobile=$("input[name=mobile]").val();
+	var email=$("input[name=email]").val();
+	var username=$("input[name=email]").val();
+	var company=$("input[name=company]").val();
+	var address=$("input[name=address]").val();
+	var city=$("input[name=city]").val();
+	var county=$("input[name=county]").val();
+	var role=$('input[name="role"]:checked').val();
+	var ecode=$("input[name=ecode]").val();
+	var xieyi_status=$('#xieyi').prop('checked');
+	var xieyi=xieyi_status?1:0;
+	var person_jxs=$("#person_val").val();
+	var design_jxs=$("#design_val").val();
+	var parentid=0;
+	if(nickname==''){
+		alert('请输入您的姓名');	
+		$("#nickname").focus();
+		return false;
+	}
+	if(role=='' || role==undefined){
+		alert('请选择您的身份');
+		return false;	
+	}
+	if(role==3 && person_jxs==''){//若为店员需要选择所属经销商
+		alert('店员需要选择所属经销商！');
+		return false;
+	}
+	if(role==2 && design_jxs==''){//若为店员需要选择所属经销商
+		alert('设计师需要选择推荐经销商！');
+		return false;
+	}
+	if(role==3){
+		parentid=person_jxs;	
+	}
+	if(role==2){
+		parentid=design_jxs;	
+	}
+	
+	if(email==''){
+		alert('请输入您的邮箱');
+		$("#email").focus();
+		return false;	
+	}else{
+		if(!regemail.test(email)){
+			alert("请输入正确的邮箱！");
+			$("#email").focus();
+			return false;
+		}	
+	}
+	if(ecode==''){
+		alert('请输入验证码');
+		$("#ecode").focus();
+		return false;	
+	}
+	/*if(mobile==''){
+		alert('请输入您的手机号');
+		$("#mobile").focus();
+		return false;	
+	}else{
+		if(!regtelphone.test(mobile)){
+			alert("请输入正确的手机号！");
+			$("#mobile").focus();
+			return false;
+		}
+	}*/
+	/*if(city==""){
+		alert('请选择所在省/市');
+		return false;	
+	}
+	if(county==""){
+		alert('请选择所在区/县');
+		return false;	
+	}
+	if(address==""){
+		alert('请输入详细地址');
+		$("#address").focus();
+		return false;	
+	}*/
+	if(company==""){
+		alert('请输入公司名称');
+		$("#company").focus();
+		return false;	
+	}
+	if(rpassword==""){
+		alert('请输入密码');
+		$("#rpassword").focus();
+		return false;	
+	}
+	if(qpassword==""){
+		alert('请输入确认密码');
+		$("#qpassword").focus();
+		return false;	
+	}
+	if(xieyi!==1){
+		alert("请勾选注册协议");
+		return false;	
+	}
+
+	data="username="+username+"&password="+rpassword+"&qpassword="+qpassword+"&mobile="+mobile+"&email="+email+"&nickname="+nickname+"&company="+company+"&city="+city+"&county="+county+"&role="+role+"&address="+address+"&ecode="+ecode+"&parentid="+parentid;
+
+	$.ajax({
+
+		"type": "post",
+
+		"url": "../index.php?g=Member&m=Index&a=public_user_reg",
+
+		"data":data,
+
+		success: function (msg) {
+			var obj = eval('(' + msg + ')');
+			alert(obj.info);
+			if(obj.status==1){
+				window.location="../other/forget_register.html";
+			}
+		}
+
+	})	
+
+})	
+var setTimer = null;
+var setTime_step = 60;
+var step_boo = true;
+$(function(){
+	$(document).on("click", ".Ag_bottom", function () {
+		var agree_status=$('#agree').prop('checked');
+		var agree=agree_status?1:0;
+		if(agree==1){
+			$("#mieyi1").addClass("form-w active");
+			$("#mieyi1 label").addClass("label-radio on");
+			$("#xieyi").attr("checked");
+		}else{
+			$("#mieyi1").removeClass("active");
+			$("#mieyi1 label").removeClass("on");
+			$("#xieyi").removeAttr("checked");	
+		}
+	})
+	$(document).on("click","#email_code",function(){
+		var email=$("input[name=email]").val();
+		if(email==""){
+			alert("请输入您的邮箱");
+			$("#email").focus();
+			return false;	
+		}else{
+			
+			//var data="eamil="+email;
+			$.ajax({
+				"type": "post",
+				"url": "../index.php?g=Member&m=Index&a=public_sendemail",
+				"data":{email:email,},
+				success: function (msg) {
+					var obj = eval('(' + msg + ')');
+					alert(obj.info);
+				}
+		
+			})	
+			
+			setTimer=setInterval(function () {
+				setTime_step--;
+				if (setTime_step == 0) {
+					clearInterval(setTimer);
+					var content="<a href=\"javascript:void(0)\" id=\"email_code\" class=\"getYzm\">获取验证码</a>";
+					$(".step_r_txt,.getYzm_box,.forget_vc span,.getYzm_boxa").html(content);
+					setTime_step = 60;
+					step_boo = true;
+				} else {
+					$(".step_r_txt,.getYzm_box,.forget_vc span,.getYzm_boxa").text(setTime_step + "秒后重新获取");
+					step_boo = false;
+				}
+				
+			}, 1000)
+		}
+		
+	})
+	
+	//找回密码发送邮件
+	$(document).on("click","#forgetmail",function(){
+        setTimer=setInterval(function () {
+
+            setTime_step--;
+            if (setTime_step == 0) {
+                clearInterval(setTimer);
+                //$(".step_r_txt > a").text("获取认证码");
+				$(".step_r_txt>a").text('获取验证码');
+                setTime_step = 60;
+                step_boo = true;
+            } else {
+                //$(".step_r_txt > a").text(setTime_step + "秒后重新获取");
+				$(".step_r_txt>a").text(setTime_step +'秒后重新获取');
+				$(".step_r_txt>a").removeAttr("id");
+				$(".step_r_txt>a").removeAttr("class");
+				$(".step_r_txt>a").attr("href","javascript:void(0);");
+                step_boo = false;
+            }
+            
+        }, 1000)
+    })
+	
+	$(document).on("click","#address_save",function(){
+		var address=$("#input_address").val();
+		var city=$("#input_city").val();
+		var county=$("#input_county").val();
+		var userid=$("#userid").val();	
+		if(city==""){
+			alert('请选择所在省/市');
+			return false;	
+		}
+		if(county==""){
+			alert('请选择所在区/县');
+			return false;	
+		}
+		if(address==""){
+			alert('请输入详细地址');
+			$("#address").focus();
+			return false;	
+		}
+		var data="city="+city+"&county="+county+"&address="+address+"&userid="+userid;
+		$.ajax({
+			"type": "post",
+			"url": "../index.php?g=Member&m=Index&a=save_address",
+			"data":data,
+			success: function (msg) {
+				var obj = eval('(' + msg + ')');
+				alert(obj.info);
+				window.location="../other/personal.html";
+			}
+	
+		})	
+		
+	})
+	
+	$(document).on("click","#company_save",function(){
+		var company=$("#input_company").val();
+		var userid=$("#userid").val();	
+		if(company==""){
+			alert('请输入公司名称');
+			return false;	
+		}
+		var data="company="+company+"&userid="+userid;
+		$.ajax({
+			"type": "post",
+			"url": "../index.php?g=Member&m=Index&a=save_company",
+			"data":data,
+			success: function (msg) {
+				var obj = eval('(' + msg + ')');
+				alert(obj.info);
+				window.location="../other/personal.html";
+			}
+	
+		})	
+		
+	})
+	
+	$(document).on("click","#password_sub",function(){
+		var oldpassword=$("input[name=oldpassword]").val();
+		var password=$("input[name=password]").val();
+		var qpassword=$("input[name=qpassword]").val();
+		var vcode=$("input[name=vcode]").val();
+		if(oldpassword==''){
+			alert('请输入旧密码');	
+			$("input[name=oldpassword]").focus();
+			return false;
+		}
+		if(password==''){
+			alert('请输入新密码');
+			$("input[name=password]").focus();
+			return false;
+		}
+		if(qpassword==''){
+			alert('请输入确认密码');	
+			$("input[name=qpassword]").focus();
+			return false;
+		}
+		if(vcode==""){
+			alert("请输入验证码");	
+			$("input[name=vcode]").focus();
+			return false;
+		}
+		data="oldpassword="+oldpassword+"&password="+password+"&qpassword="+qpassword+"&vcode="+vcode;
+		$.ajax({
+			"type": "post",
+			"url": "../index.php?g=Member&m=Index&a=userinfo_edit",
+			"data":data,
+			success: function (msg) {
+				var obj = eval('(' + msg + ')');
+				if(obj.status==1){
+					alert(obj.info);
+					window.location.href="../other/personal.html";
+				}else{
+					alert(obj.info);	
+
+				}
+
+			}
+
+		})	
+	})
+	
+	$(document).on("click","#forget1_sub",function(){
+		var email=$("input[name=email]").val();
+		var vcode=$("input[name=vcode]").val();
+		var regemail = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
+		if(email==''){
+			alert('请输入您的邮箱');
+			$("input[name=email]").focus();
+			return false;	
+		}else{
+			if(!regemail.test(email)){
+				alert("请输入正确的邮箱！");
+				$("input[name=email]").focus();
+				return false;
+			}	
+		}
+		if(vcode==""){
+			alert("请输入验证码");	
+			$("input[name=vcode]").focus();
+			return false;
+		}
+		var data="email="+email+"&vcode="+vcode;
+		$.ajax({
+			"type": "post",
+			"url": "../index.php?g=Member&m=Index&a=public_forget1_ajax",
+			"data":data,
+			success: function (msg) {
+				var obj = eval('(' + msg + ')');
+				if(obj.status>0){
+					window.location.href='../other/forget_mail2.html';
+				}else{
+					alert(obj.info);
+				}
+			}
+		})	
+	})
+	
+	$(document).on("click","#forget2_sub",function(){
+		var email=$("input[name=email]").val();
+		var ecode=$("input[name=ecode]").val();
+		if(ecode==""){
+			alert("请输入验证码");	
+			$("input[name=ecode]").focus();
+			return false;
+		}
+		var data="email="+email+"&ecode="+ecode;
+		$.ajax({
+			"type": "post",
+			"url": "../index.php?g=Member&m=Index&a=public_forget2_ajax",
+			"data":data,
+			success: function (msg) {
+				var obj = eval('(' + msg + ')');
+				if(obj.status>0){
+					window.location.href='../other/forget_mail3.html';
+				}else{
+					alert(obj.info);
+				}
+			}
+		})	
+	})
+	
+	$(document).on("click","#forget3_sub",function(){
+		var password=$("input[name=password]").val();
+		var qpassword=$("input[name=qpassword]").val();
+		data="password="+password+"&qpassword="+qpassword;
+		$.ajax({
+			"type": "post",
+			"url": "../index.php?g=Member&m=Index&a=public_forget3_ajax",
+			"data":data,
+			success: function (msg) {
+				var obj = eval('(' + msg + ')');
+				if(obj.status>0){
+					window.location.href='../other/forget_mail4.html';
+				}else{
+					alert(obj.info);
+				}
+			}
+		})	
+	})
+	
+	$(document).on("click","#forget1_mobile",function(){
+		var mobile=$("input[name=mobile]").val();
+		var vcode=$("input[name=vcode]").val();
+		var regtelphone=/^(1[35847]\d{9})$/;
+		if(mobile==''){
+			alert('请输入您的手机号');
+			$("input[name=mobile]").focus();
+			return false;	
+		}else{
+			if(!regtelphone.test(mobile)){
+				alert("请输入正确的手机号！");
+				$("input[name=mobile]").focus();
+				return false;
+			}	
+		}
+		if(vcode==""){
+			alert("请输入验证码");	
+			$("input[name=vcode]").focus();
+			return false;
+		}
+		var data="mobile="+mobile+"&vcode="+vcode;
+		$.ajax({
+			"type": "post",
+			"url": "../index.php?g=Member&m=Index&a=public_forget_mobile1",
+			"data":data,
+			success: function (msg) {
+				var obj = eval('(' + msg + ')');
+				if(obj.status>0){
+					window.location.href='../other/forget2.html';
+				}else{
+					alert(obj.info);
+				}
+			}
+		})	
+	})
+	
+	
+	
+})
+
+function getemail_vode(){
+	$("#forgetmail").html('发送中...');
+	var email=$("#email").val();
+	var data="email="+email;
+	$.ajax({
+		"type": "post",
+		"url": "../index.php?g=Member&m=Index&a=public_sendemail",
+		"data":data,
+		success: function (msg) {
+			var obj = eval('(' + msg + ')');
+			if(obj.status==1){
+				alert(obj.info);
+				$("#forgetmail").html('获取验证码');
+			}else{
+				alert(obj.info);
+				$("#forgetmail").html('获取验证码');
+			}
+		}
+	})	
+}
+
+
+function download(id){
+	var userid=$("#public_userid").val();
+	if(userid>0){
+		window.location.href="../index.php?a=downloadFile&id="+id;
+	}else{
+		//alert('请先登录会员再下载！');
+		$(".login_a").click();
+	}	
+}
+
+$(function(){
+	$(document).on("click","#getPhoneCode",function(){
+		
+		var phone=$("#input_mobile").val();
+		if(phone==''){
+			alert('请输入常用手机号！');
+			return false;	
+		}
+		var data="phone="+phone;
+		$.ajax({
+			"type": "post",
+			"url": "../index.php?g=Member&m=Index&a=public_sendphone",
+			"data":data,
+			success: function (msg) {
+				var obj = eval('(' + msg + ')');
+				if(obj.status==1){
+					alert(obj.info);
+				}else{
+					alert(obj.info);
+				}
+			}
+		})	
+		var setTime_step1=60;
+		setTimer=setInterval(function () {
+			/*var reg = /^\d$/;
+			var m = Math.floor (setTime_step1 / 60 % 60);
+			m = reg.test (m) ? "0" + m : m;
+			var s = Math.floor (setTime_step1 % 60);
+			s = reg.test (s) ? "0" + s : s;
+			var str =  m + ":" + s;*/
+
+            setTime_step1--;
+            if (setTime_step1 == 0) {
+                clearInterval(setTimer);
+                //$(".step_r_txt > a").text("获取认证码");
+				$("#getcode_span").html('<a href="javascript:void(0)" id="getPhoneCode" class="getYzm">获取验证码</a>');
+                setTime_step1 = 60;
+                step_boo = true;
+            } else {
+                //$(".step_r_txt > a").text(setTime_step + "秒后重新获取");
+				$("#getcode_span").text(setTime_step1 +'后重新获取');
+                step_boo = false;
+            }
+            
+        }, 1000)
+	})
+	
+	$(document).on("click","#phone_save",function(){
+		var userid=$("#userid").val();	
+		var phone=$("#input_mobile").val();
+		var vcode=$("#vcode").val();
+		var phone_code=$("#phone_code").val();
+		var regtelphone=/^(1[35847]\d{9})$/;
+		if(phone==''){
+			alert("请输入常用的手机号！");
+			$("#input_mobile").focus();
+			return false;
+		}else{
+			if(!regtelphone.test(phone)){
+				alert("请输入正确的手机号！");	
+				$("#input_mobile").focus();
+				return false;
+			}	
+		}
+		if(vcode==''){
+			alert("请输入验证码！");
+			$("#vcode").focus();
+			return false;	
+		}
+		if(phone_code==''){
+			alert("请输入手机验证码！");
+			$("#phone_code").focus();
+			return false;	
+		}
+		var data="phone="+phone+"&vcode="+vcode+"&phone_code="+phone_code+"&userid="+userid;
+		$.ajax({
+			"type": "post",
+			"url": "../index.php?g=Member&m=Index&a=save_phone",
+			"data":data,
+			success: function (msg) {
+				var obj = eval('(' + msg + ')');
+				if(obj.status==1){
+					window.location.href='../other/personal.html';
+				}else{
+					alert(obj.info);
+					
+				}
+			}
+		})
+			
+	})
+	
+	
+	$(document).on("click","#forgetmobile",function(){
+		
+		var phone=$("#mobile").val();
+		
+		var data="phone="+phone;
+		$.ajax({
+			"type": "post",
+			"url": "../index.php?g=Member&m=Index&a=public_sendphone",
+			"data":data,
+			success: function (msg) {
+				var obj = eval('(' + msg + ')');
+				if(obj.status==1){
+					
+				}else{
+					alert(obj.info);
+				}
+			}
+		})	
+		var setTime_step1=60;
+		setTimer=setInterval(function () {
+			
+			/*var reg = /^\d$/;
+			var m = Math.floor (setTime_step1 / 60 % 60);
+			m = reg.test (m) ? "0" + m : m;
+			var s = Math.floor (setTime_step1 % 60);
+			s = reg.test (s) ? "0" + s : s;
+			var str =  m + ":" + s;*/
+
+            setTime_step1--;
+            if (setTime_step1 == 0) {
+                clearInterval(setTimer);
+                //$(".step_r_txt > a").text("获取认证码");
+				$("#em_phonecode").html('<a href="javascript:void(0);" class="getYzm" id="forgetmobile">获取验证码</a>');
+                setTime_step1 = 60;
+                step_boo = true;
+            } else {
+                //$(".step_r_txt > a").text(setTime_step + "秒后重新获取");
+				$("#em_phonecode").text(setTime_step1 +'后重新获取');
+                step_boo = false;
+            }
+            
+        }, 1000)
+	})
+	
+	$(document).on("click","#forget2_mobile",function(){
+		var mobile=$("input[name=mobile]").val();
+		var mcode=$("input[name=mcode]").val();
+		if(mcode==""){
+			alert("请输入验证码");	
+			$("input[name=mcode]").focus();
+			return false;
+		}
+		var data="mobile="+mobile+"&mcode="+mcode;
+		$.ajax({
+			"type": "post",
+			"url": "../index.php?g=Member&m=Index&a=public_forget_mobile2",
+			"data":data,
+			success: function (msg) {
+				var obj = eval('(' + msg + ')');
+				if(obj.status>0){
+					window.location.href='../other/forget3.html';
+				}else{
+					alert(obj.info);
+				}
+			}
+		})	
+	})
+	
+	$(document).on("click","#forget3_mobile",function(){
+		var password=$("input[name=password]").val();
+		var qpassword=$("input[name=qpassword]").val();
+		data="password="+password+"&qpassword="+qpassword;
+		$.ajax({
+			"type": "post",
+			"url": "../index.php?g=Member&m=Index&a=public_forget_mobile3",
+			"data":data,
+			success: function (msg) {
+				var obj = eval('(' + msg + ')');
+				if(obj.status>0){
+					window.location.href='../other/forget4.html';
+				}else{
+					alert(obj.info);
+				}
+			}
+		})	
+	})	
+})
+
+function deleteDesign(designid){
+	var msg = "您确定要删除吗？";
+	if (confirm(msg)==true){
+		var data="designid="+designid;
+		$.ajax({
+			"type": "post",
+			"url": "../index.php?g=Member&m=Index&a=public_deleteDesign",
+			"data":data,
+			success: function (msg) {
+				var obj = eval('(' + msg + ')');
+				if(obj.status>0){
+					window.location.href='../other/personal.html';
+				}else{
+					alert(obj.info);
+				}
+			}
+		})
+	}else{
+		return false;
+	}		
+}
+
+function getdataonly(planid){
+	var data="planid="+planid;
+	$.ajax({
+		"type": "post",
+		"url": "../index.php?g=Member&m=Index&a=public_getdataonly",
+		"data":data,
+		success: function (msg) {
+			var obj = eval('(' + msg + ')');
+			$("#commName").html(obj.name);
+			$("#num").html("你共有"+obj.num+"张全景图，请选择多张生成全景漫游图&nbsp;&nbsp;<i>注：最多可选择20张</i>");
+			$("#address").html(obj.address);
+			$("#specName").html(obj.specName);
+			$("#ListHtml").html(obj.ListHtml);
+		}
+	})
+}
+
+$(document).on("click","#3dgenerate",function(){
+	var total=$(".other-active-new ul li.on").length;//选择张数
+	if(total==0){
+		alert("请选择多张生成全景漫游图");
+		return false;		
+	}
+	if(total>20){
+		alert("最多可选20张");
+		return false;	
+	}
+	var startimg=$(".other-active-new-list-box a.on").length;//判断有没有选择起始点
+	if(startimg==0){
+		alert("您还未设置起始点");
+		return false;	
+	}
+	$(this).html("正在生成....");
+	var pic_start=$(".other-active-new-list-box a.on").data("id");
+	var picids=pic_start;
+	$(".other-active-new ul li.on").map(function(){
+		if($(this).data("id")!=pic_start){
+			picids=picids+","+$(this).data("id");	
+		}	
+	})
+	var data="picids="+picids;
+	$.ajax({
+		"type": "post",
+		"url": "../index.php?g=Member&m=Index&a=public_generate",
+		"data":data,
+		success: function (msg) {
+			var obj = eval('(' + msg + ')');
+			window.location.href='../other/personal.html';
+		}
+	})
+	
+})
+
+
+
+

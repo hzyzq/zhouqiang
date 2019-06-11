@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script src="./vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <input type="text" v-model="msg">
+    </div>
+    <script>
+        var vm = new Vue({
+            el:'#app',
+            data:()=>({
+                msg:"",
+                ds:["abc"]
+            }),
+            watch:{
+                msg:function(newv,oldv){
+                    if(newv==='iloveyou'){
+                        alert('i love you');
+                    }
+                },
+                ds:
+            }
+        });
+    </script>
+</body>
+</html>

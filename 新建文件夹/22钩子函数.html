@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script src="./vue.js"></script>
+</head>
+<body>
+    <div id="box">
+        <div id="app">
+
+        </div>
+    </div>
+    <script>
+        var vm = new Vue({
+            el:'#app',
+            data:()=>({
+                msg:"hello"
+            }),
+            methods:{
+                aa(){
+                    'abc'
+                },
+                fn(){
+                    this.msg=this.msg+1;
+                }
+            },
+            template:`
+                <p>
+                    {{msg}}
+                    <button @click="fn">update</button>
+                </p>
+            `,
+            /* beforeCreate(){
+                console.log(this.msg);
+                console.log(this.aa);
+                console.log(this.$el);
+            },
+            created(){
+                console.log(this.msg);
+                console.log(this.aa);
+                console.log(this.$el);
+            },
+            beforeMount(){
+                console.log(this.msg);
+                console.log(this.aa);
+                console.log(this.$el);
+            },
+            mounted(){
+                console.log(this.msg);
+                console.log(this.aa);
+                console.log(this.$el);
+            }, */
+            beforeUpdate(){
+                console.log(this.$el.innerHTML);
+                //console.log(document.getElementById("box").innerHTML);
+            },
+            updated(){
+                console.log(this.$el.innerHTML);
+                //console.log(document.getElementById("box").innerHTML);
+            },
+            destroyed(){
+                console.log(this.msg);
+                console.log(this.aa);
+            }
+        });
+    </script>
+</body>
+</html>

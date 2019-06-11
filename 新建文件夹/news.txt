@@ -1,0 +1,25 @@
+1.创建数据库
+create database news default charset utf8;
+2.创建数据表
+	config数据表
+	 create table config(sysname varchar(50),keyword varchar(100),dsc varchar(200),address varchar(100),copy varchar(30),tel varchar(50),author varchar(20));
+
+	admin数据表
+	 create table admin(id int(11) unsigned not null primary key auto_increment,username varchar(30) not null,pwd char(32) not null,adate int(11));
+
+	menu数据表
+	 create table menu(id int(11) unsigned not null primary key auto_increment,name varchar(20) not null,dsc varchar(50),mdate int(11))engine=innodb;
+
+	content数据表
+	create table content(id int(11) unsigned not null primary key auto_increment,title varchar(100),source varchar(30),keyword varchar(50),mid int(11) unsigned not null,cdate int(11),hit int(11))engine=innodb;
+
+	给content表和menu表创建外键约束
+	alter table content add constraint content_menu_id foreign key(mid) references menu(id) on delete cascade on update cascade;
+
+	ncontent(存放新闻内容)数据表
+	 create table ncontent(tid int(11) unsigned not null,content text)engine=innodb;
+
+	
+
+	
+

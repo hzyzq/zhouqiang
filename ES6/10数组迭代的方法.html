@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <!-- 
+        对象：本地对象，内置对象，宿主对象，自定义对象
+
+        Array  Date  String  Number  Function  RegExp
+        Boolean  Error  Object   XMLHttpRequest
+        Arguments   Set  Map
+
+        global  Math
+
+        DOM
+
+        BOM
+
+        对象=属性+方法
+
+        属性：可读，可写
+
+        方法：
+        1)方法属于哪个对象
+        2)该方法的作用
+        3)该方法有几个参数，参数的数据类型
+        4)该方法的返回值情况
+        5)该方法会不会改变原对象
+        6)该方法是构造函数（类）身上的，还是new出来实例身上的
+        var  arr=[1,2,3]
+        var len=arr.push(4,5,6)
+     -->
+     <script>
+         var arr=[1,2,3];
+         /* let res=arr.some(function(item,index,arr){
+             console.log('a');
+             return item>2;
+         })
+         console.log(res); */
+
+        /* var res=arr.every(function(item,index,arr){
+            console.log('a');
+            return item<0;
+        });
+        console.log(res); */
+
+        /* var res=arr.forEach(function(item,index,arr){
+            item+=2;
+            console.log(item);
+        })
+        console.log(arr);
+        console.log(res); */
+
+        /* var res=arr.map(function(item,index,arr){
+            return item+2;
+        });
+        console.log(res);
+        console.log(arr); */
+        /* let res=arr.filter(function(item,index,arr){
+            return item>2;
+        });
+        console.log(res); */
+
+        /* var arr=[1,2,3,4,5];
+        var num=arr.reduceRight(function(prev,cur,index,arr){
+            console.log(prev);
+            var s=prev+cur
+            console.log(s);
+            return s;
+        },5);
+        console.log(num); */
+     </script>
+</body>
+</html>

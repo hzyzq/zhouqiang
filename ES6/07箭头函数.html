@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="box" style="width:100px; height:100px; background:#ccc;"></div>
+    <script>
+        //写函数的形式有哪几种？
+        /* function fn(){}
+        
+        var fn=function(){}
+
+        var fn=new Function("");
+
+        var obj={
+            fn:function(){}
+        } */
+
+        /* let fn=()=>{}
+
+        fn();
+
+        (()=>{})(); */
+
+
+        /* let fn=()=>123;
+        console.log(fn()); */
+        /* console.log((a=>123+a)(5));
+
+        a=>123
+
+        a=>({})
+            */
+        let oDiv=document.getElementById("box");
+        oDiv.onclick=test;
+        function test(){
+            console.log(this);
+            var that=this;
+            setTimeout(function(){
+                console.log(that);
+            },100);
+            setTimeout(()=>{
+                console.log(this);
+            },100);
+        }
+    </script>
+</body>
+</html>

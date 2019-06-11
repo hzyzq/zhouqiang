@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        /* let a={
+            name:'lc',
+            age:30,
+            arr:[1,2,3]
+        }
+        function Fn(){};
+        Fn.prototype=a;
+        let b=new Fn();
+        
+        b.name="zs";
+        b.arr.push(4);
+        console.log(b.arr);
+        console.log(a.arr);
+        console.log(a.name);
+        console.log(b.name); */
+
+
+        /* let a={
+            name:'lc',
+            age:30,
+            arr:[1,2,3]
+        }
+
+        function object(obj){
+            function Fn(){};
+            Fn.prototype=obj;
+            return new Fn();
+        }
+        let b=object(a);
+
+        b.name="zs";
+        b.arr.push(4);
+        console.log(b.arr);
+        console.log(a.arr);
+        console.log(a.name);
+        console.log(b.name); */
+
+        /* let b={};
+
+        for(let k in a){
+            b[k]=a[k];
+        }
+        b.arr.push(4)
+        console.log(a.arr);
+        console.log(b.arr); */
+
+        let a={
+            name:'lc',
+            age:30,
+            arr:[1,2,3]
+        }
+
+        let b=Object.create(a,{
+            'job':{value:'yy',writable:true},
+            'loves':{value:'上网'}
+            });
+            b.name="zs";
+            b.job="cc";
+        /* b.arr.push(4);
+        console.log(b.name);
+        console.log(b.arr);
+        console.log(a.arr); */
+        console.log(b);
+    
+
+/* 
+    Object: 
+    prototype
+    create()   keys   values   entries  assign  fromEntries
+
+*/
+
+//Object.prototype:
+
+    </script>
+</body>
+</html>

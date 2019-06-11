@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>js继承</title>
+</head>
+<body>
+    <script>
+        //父类
+        function CreatePerson(name,age,sex){
+            this.name=name
+            this.age=age
+            this.sex=sex
+        }
+        CreatePerson.prototype.sayName=function(){
+            console.log(this.name);
+        }//CreatePerson.prototype={sayname:; con...}
+        let p1=new CreatePerson('lc',30,'man');
+
+        //子类
+        function CreateStar(name,age,sex,job){
+            CreatePerson.call(this,name,age,sex);
+            this.job=job;
+        }
+        //CreateStar.prototype=CreatePerson.prototype;
+        for(var k in CreatePerson.prototype){
+            CreateStar.prototype[k]=CreatePerson.prototype[k]
+        }
+        //CreateStar.prototype.constructor=CreateStar;
+        CreateStar.prototype.sayName=function(){
+            console.log('aaaaaaaaaaa');
+        }
+        let p2=new CreateStar('zs',40,'woman','演员');
+        console.log(p1.name);
+        console.log(p2.name);
+        console.log(p1.job);
+        console.log(p2.job);
+        console.log(p1);
+        console.log(p2);
+        p2.sayName();
+        p1.sayName();
+        console.log(CreateStar.prototype.constructor);
+    </script>
+</body>
+</html>

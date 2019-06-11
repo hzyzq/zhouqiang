@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script src="./vue.js"></script>
+</head>
+<body>
+    
+    <div id="app">
+
+    </div>
+
+    <script>
+        let coustom1={
+            template:`
+                <span>span</span>
+            `,
+            beforeDestroy(){
+                console.log('beforeDestroy')
+            },
+            destroyed(){
+                console.log('destroyed')
+            },
+            activated(){
+                alert('activated');
+            },
+            deactivated(){
+                alert('deactivated000');
+            }
+        }
+        var vm = new Vue({
+            el:'#app',
+            data(){
+                return{
+                    msg:true,
+                }
+            },
+            components:{
+                coustom1
+            },
+            template:`
+                <p>
+                    <keep-alive>
+                        <coustom1 v-if="msg" />
+                    </keep-alive>
+                   <button @click="msg=!msg">update</button>
+                </p>
+            `,
+            
+        });
+    </script>
+</body>
+</html>

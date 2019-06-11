@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        /* var json={
+            "a":1,
+            "b":2,
+            "c":3
+        }
+        json['a']="abc";
+        console.log(json); */
+
+        var json={
+            "a":1,
+            "b":2,
+            "c":3
+        }
+       var a=Symbol('a');
+       var b=Symbol('b');
+       json[a]="abc";
+       json[b]="123";
+       console.log(a===b);
+       console.log(a);
+       console.log(b);
+       console.log(json);
+    for(let k in json)
+    {
+        console.log(json[k]);
+    }
+    var key=Object.getOwnPropertySymbols(json);
+    console.log(key);
+    console.log(json[key[0]]);
+    console.log(json[key[1]]);
+    </script>
+</body>
+</html>

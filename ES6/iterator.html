@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>iterator-遍历接口</title>
+</head>
+<body>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <!-- 
+        不是所有的数据结构都有遍历接口的
+     -->
+     <script>
+         var arr=[1,2,3];
+         var obj={
+             a:1,
+             b:2,
+             c:3,
+             length:3
+         }
+         //obj[a]===obj.a
+         for(var sx in obj){
+             console.log(obj[sx]);
+         }
+        /*  for(var i=0; i<obj.length; i++)
+         {
+
+         } */
+        //  var objarr=[...obj];
+        //  console.log(objarr);
+        var aDiv=document.getElementsByTagName('div');
+        //var arr=[...aDiv];
+        //console.log(arr);
+
+        //var arr=Array.from(aDiv);
+        //console.log(arr);
+
+        // var arr=[];
+        // for(var a in aDiv)
+        // {
+        //     arr.push(aDiv[a]);
+        // }
+        //console.log(arr);
+
+        var arr=Array.prototype.slice.call(aDiv);
+        console.log(arr);
+
+     </script>
+</body>
+</html>

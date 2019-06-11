@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>toString</title>
+</head>
+<body>
+    <script>
+        /* let num=255;
+        num.name="lc";
+        console.log(num.name) */
+
+        /* let num=new Number(255);
+        num.name="lc";
+        console.log(num.name) */
+
+        /* let num=255;
+        console.log(num.toString(8)); */
+
+
+        /* let str='abc'; */
+
+        /* str.name='lc';
+        console.log(str.name); */
+
+        /* console.log(str.charAt(1));
+        console.log(str.length); */
+
+
+        /* let a=parseInt('123.456px');
+        console.log(a); */
+
+        /* let a=parseInt('0377',8);
+        console.log(a); */
+
+//检测一个数据的类型？
+        // 1.typeof
+        // 2.instanceof
+        // 3.constructor
+        // 4.toString
+
+        var num=5;
+        var arr=[];
+        //console.log(typeof num);//'number'
+        //console.log(num instanceof Number);//false
+        console.log(Object.prototype.toString.call(num));//'[object Number]'
+        console.log(Object.prototype.toString.call(arr));//'[object Array]'
+        console.log(arr instanceof Array);//true
+        console.log(arr instanceof Object);//true
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        /* //父类
+        function A(){
+            this.name='zs';
+            this.sayHello=function(){
+                console.log('hello')
+            }
+        }
+        A.prototype.attr="abc";
+        A.prototype.sayJob=function(){
+            console.log('演员');
+        };
+        let a=new A();//{name:"zs",sayHello:f}
+
+        //子类
+        function B(){};
+        B.prototype=new A();//{name:"zs",sayHello:f}
+        let b=new B(); */
+//----------------------------------------------------
+        //父类
+        function A(){
+            this.name='zs';
+            this.sayHello=function(){
+                console.log('hello')
+            }
+            this.arr=[1,2,3];
+        }
+        A.prototype.attr="abc";
+        A.prototype.sayJob=function(){
+            console.log('演员');
+        };
+        let a=new A();//{name:"zs",sayHello:f}
+
+        //子类
+        function B(){
+            A.call(this);
+        };
+
+        B.prototype=new A();//{name:"zs",sayHello:f}
+        B.prototype.constructor=B;
+        let b=new B();
+        let b2=new B();
+        b.arr.push(4);
+        console.log(a.arr);
+        console.log(b.arr);
+        console.log(b2.arr);
+        
+    </script>
+</body>
+</html>

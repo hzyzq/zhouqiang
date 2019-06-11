@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <!-- 
+        对象
+        面向对象：抽象  封装  继承  多态
+     -->
+     <script>
+         /* var obj={
+             name:'lc',
+             age:30,
+             sex:'man'
+         }
+         var obj2={
+             name:'ls',
+             age:40,
+             sex:'woman'
+         } */
+
+         /* var obj=new Object();
+         var obj={} */
+
+        /* var arr=new Array(1,2,3);
+        arr.name="lc";
+        arr.age=30;
+        arr.push=function(){
+            alert(5);
+        }
+        arr.push(10);
+        console.log(arr); */
+
+
+/* 工厂模式：解决代码复用   复用？？？？*/
+         /* function Person(name,age){
+            var obj=new Object();
+            obj.name=name;
+            obj.age=age;
+            obj.sayName=function(){
+                console.log(obj.sayName);
+            }
+            return obj;
+        }
+        var zs=Person('zs',30);
+        var ls=Person('ls',40); */
+
+        /* 
+        工厂模式的问题 1.没有new
+        */
+/* 解决：有new   构造函数模式*/
+        /* function Person(name,age){
+            //var obj=new Object();
+            this.name=name;
+            this.age=age;
+            this.sayName=function(){
+                console.log(this.sayName);
+            }
+            //console.log(this);
+            //return obj;
+        }
+        var zs=new Person('zs',30);
+        var ls=new Person('ls',40);  
+
+        console.log(zs.name);      
+        console.log(ls.name); */
+
+ /* 构造函数模式的问题： 代码没有复用，会影响性能*/             
+        /* function Person(name,age){
+            this.name=name;
+            this.age=age;
+            this.sayName=function(){
+                console.log(this.sayName);
+            }
+        }
+        var zs=new Person('zs',30);
+        var ls=new Person('ls',40);  
+        console.log(zs.sayName);      
+        console.log(ls.sayName);   
+        console.log(zs.sayName===ls.sayName);//false   
+        console.log(zs.name===ls.name);//false   
+        console.log(zs.age===ls.age); //false
+        */
+
+/* 原型模式： */
+        /* function Person(name,age){
+            Person.prototype.name=name;
+            Person.prototype.age=age;
+            Person.prototype.sayName=function(){
+                console.log(this.name);
+            }
+        }
+
+        var zs=new Person('zs',30);
+        var ls=new Person('ls',40);  
+        console.log(zs.name); //ls     
+        console.log(ls.name); //ls  
+        console.log(zs.sayName===ls.sayName); //true  
+        console.log(zs.name===ls.name); //true  
+        console.log(zs.age===ls.age);//true     */
+
+/* 原型模式的问题是代码会出现覆盖，解决覆盖，组合模式 */
+
+        function Person(name,age){
+            this.name=name;
+            this.age=age;            
+        }
+
+        Person.prototype.sayName=function(){
+            console.log(this.name);
+        }
+
+        var zs=new Person('zs',30);
+        var ls=new Person('ls',40);
+        console.log(zs.sayName===ls.sayName);
+        console.log(zs.name);  
+        console.log(zs.age);  
+        console.log(ls.name);  
+        console.log(ls.age); 
+        zs.sayName(); 
+        ls.sayName(); 
+     </script>
+</body>
+</html>

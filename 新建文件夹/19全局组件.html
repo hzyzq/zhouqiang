@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script src="./vue.js"></script>
+</head>
+<body>
+    <div id="app">
+
+    </div>
+    <script>
+        let App={
+            data(){
+                return {
+                    msg:"hello"
+                }
+            },
+            template:`
+                <div>
+                    {{msg}}
+                </div>
+            `
+        }
+        Vue.component('app',App);
+
+        let myHead={
+            template:`
+                <p>
+                    abc
+                    <app />
+                </p>
+            `
+        }
+
+        var vm = new Vue({
+            el:'#app',
+            data(){
+                return{
+
+                }
+            },
+            components:{
+                myHead
+            },
+            template:`
+            <div>
+                <app />
+                <myHead />
+            </div>
+            `
+        });
+    </script>
+
+
+
+</body>
+</html>

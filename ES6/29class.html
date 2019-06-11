@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        /* function Fn(){
+            this.name='lc';
+            this.age=30;
+
+            console.log(this);
+       }
+    //    Fn.call
+    //    Fn.apply
+    //    Fn.length
+    //    Fn.aa='abc';
+       Fn.qq=function(){}
+        Fn.prototype.sayName=function(){
+            console.log(this.name);
+        } 
+        let f=new Fn();
+        for(k in Fn.prototype){
+            console.log(k);
+        } 
+         Fn()
+        */
+        /* class Fn{
+            constructor(){
+                this.name='lc';
+                this.age=30;
+            }
+            sayName(){
+                console.log(this.name); 
+            }
+        }
+        let f=new Fn();
+        console.log(f);
+        f.sayName();
+        console.log(typeof Fn);
+        console.log(Fn.prototype);
+        for(k in Fn.prototype){
+            console.log(k);
+        }
+        console.log(Object.keys(Fn.prototype)); */
+        //new Fn();
+
+//静态属性   静态方法    构造函数（类）身上的
+//动态属性   动态方法    实例身上的
+
+
+        /* let str1=new String('a');
+        let str2=new String('b');
+        console.log(str1.charCodeAt(0));
+        console.log(str2.charCodeAt(0));
+
+        console.log(String.fromCharCode(98)); */
+
+class Person{
+    constructor(){
+        this.aa=function(){
+            console.log(789);
+        }
+    }
+    static aa(){
+        console.log('abc')
+    }
+    static qq='abc'
+    aa(){
+        console.log(123);
+    }
+}
+Person.kk='lc';
+let p1=new Person();
+let p2=new Person();
+p2.aa=function(){console.log('mnk')}
+p1.aa=function(){console.log('456')}
+p1.aa();
+p2.aa();
+Person.aa();
+
+console.log(Person.kk);
+console.log(Person.qq);
+
+
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+﻿var uploadsuccess = function (newpath, upload) {
+    $(document).off("click", ".again")
+    $("#" + upload).addClass("again-box")
+    $("#" + upload + " .ViewSpan").html("<a class='view' target='_blank' href='#'>查看</a> <a href=\"javascript:void(0);\" class='again' >重新上传</a>").show();
+    $("#" + upload + " iframe").hide();
+    $("#" + upload + " .filename").val(newpath)
+    $("#" + upload + " .view").attr("href", newpath);
+
+    $("#" + upload + " .filename").blur();
+    $(document).on("click", "#" + upload + " .again", function () {
+        $("#" + upload).removeClass("again-box")
+        $("#" + upload).find("iframe").attr('src', 'Plugin/FileManage/UploadImg.html?islarge=' + upload + '');
+        $("#" + upload).find("iframe").show();
+        $("#" + upload).find(".ViewSpan").html('').hide();
+        $("#" + upload).find(".filename").val('');
+    })
+};

@@ -1,0 +1,46 @@
+// JavaScript Document
+
+$(function(){
+    var srcl = "", simg = '', src2='';
+	//高度计算
+		video()
+
+	var isSupportTouch = "ontouchend" in document ? true : false;
+	$(document).on("click",".video_button",function(e){
+		srcl=$(this).data("video");
+		simg = $(this).data("img");
+		$(".video_appbox").fadeIn();
+		video();
+		stopMusic();
+	})
+	
+	$(".video_appbox .mask").click(function () {
+	    removeVideo();
+	})
+
+	$(document).on("click", ".video_t > a", function () {
+	    removeVideo();
+	});
+	
+
+	
+	function video(){
+
+
+		    $(".video_t").html("<video width='500' height='400' src='" + srcl + "' type='video/mp4' id='media' autoplay='autoplay' poster='" + simg + "' controls='controls' preload='none'></video>")
+			//
+			$(".video_t video").attr({width:$(".video_t").width(),height:$(".video_t").height()})
+			
+			$(".video_t").append('<a href="javascript:void(0)"><img alt="" src="'+$("#player1").attr("rel")+'"></a>')
+
+	}
+	
+	
+})
+
+
+function removeVideo() {
+    $(".video_appbox").fadeOut();
+    $(".video_t").html("")
+    $(".video_t > a").remove();
+}

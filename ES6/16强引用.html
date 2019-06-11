@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        /* var m=new Map();
+        var personA={
+            name:'lc',
+            age:30
+        }
+        var personB={
+            name:'zs',
+            age:40
+        }
+        m.set(personA,'web1').set(personB,'web2');
+        console.log(m); */
+
+        var wm=new WeakMap();
+        var personA={
+            name:'lc',
+            age:30
+        }
+        var personB={
+            name:'zs',
+            age:40
+        }
+        wm.set(personA,'web1').set(personB,'web2');
+        console.log(wm);
+    </script>
+</body>
+</html>

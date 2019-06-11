@@ -1,0 +1,481 @@
+//回车事件，麦肯锡网站有示例
+$(document).ready(function() {
+    var head_search_flag = false;
+    $("#search-head").focus(function() {
+        head_search_flag = true;
+    });
+    $("#search-head").blur(function() {
+        head_search_flag = false;
+    });
+    $(window).keydown(function(e) {
+        if(e.keyCode == 13) {
+           if(head_search_flag) {
+               checkSearch();
+           }
+        }
+    })
+})
+
+
+
+var Request = { 
+	QueryString: function (key) {
+	var svalue = window.location.search.match(new RegExp("[\?\&]" + key + "=([^\&]*)(\&?)", "i"));
+	return svalue ? svalue[1] : svalue;
+	}
+}
+
+
+//回车事件
+function EnterFunction(ElementInput, ElementBtn) {
+    $(ElementInput).keydown(function (e) {
+        var curKey = e.which;
+        if (curKey == 13) {
+            $(ElementBtn).click();
+        }
+    });
+}
+$(function () {
+    EnterFunction("#formd_search_id", "#btnSearch");
+	EnterFunction("#formd_search_id1", "#btnSearch1");
+    EnterFunction("#search-field", "#btnSearch");
+    EnterFunction("#keywords", ".go_page");
+	EnterFunction("#selecttxt", "#selectbut");
+
+})
+
+/*-----------------------------搜索结果绑定-------------------------------------------------------------------------*/
+$(function () {
+    $('#btnSearch').click(function () {
+        search();
+    });
+    function search() {
+        if ($.trim($("#formd_search_id").val()) == '' || $.trim($("#formd_search_id").val()) == "search...") {
+            $('#formd_search_id').focus();
+            alert("请输入关键词！");
+            return;
+        }
+        else {
+            window.location = "/other/search.html?key=" + encodeURIComponent($.trim($("#formd_search_id").val()));
+        }
+    }
+})
+
+$(function () {
+    $('#btnSearch3').click(function () {
+        search();
+    });
+    function search() {
+        if ($.trim($("#formd_search_id").val()) == '' || $.trim($("#formd_search_id").val()) == "search...") {
+            $('#formd_search_id').focus();
+            alert("请输入关键词！");
+            return;
+        }
+        else {
+            window.location = "/other/search.html?type=1&key=" + encodeURIComponent($.trim($("#formd_search_id").val()));
+        }
+    }
+})
+
+$(function () {
+    $('#btnSearch1').click(function () {
+        search1();
+    });
+    function search1() {
+        if ($.trim($("#formd_search_id1").val()) == '' || $.trim($("#formd_search_id1").val()) == "search...") {
+            $('#formd_search_id1').focus();
+            alert("请输入关键词！");
+            return;
+        }
+        else {
+            window.location = "/other/search.html?key=" + encodeURIComponent($.trim($("#formd_search_id1").val()));
+        }
+    }
+})
+
+
+
+//危险字符过滤
+$(function () {
+    $(document).on('keyup', 'input[type=text],textarea,input[type=password]', function () {
+        var val = $(this).val().toLocaleLowerCase();
+        var otherKey = " and | exec | count | chr | mid | master | or | truncate | char | declare | join |<|>|/*|*/|;|\\u|insert|select|delete|update|create|drop|script|javascript|alert";
+        var goon = true;
+        for (var i = 0; i < otherKey.split('|').length ; i++) {
+            if (goon) {
+                if (val.indexOf(otherKey.split('|')[i]) != -1) {
+                    alert("不能包含危险字符!");
+                    $(this).val('');
+                    goon = false;
+                    return;
+                }
+            }
+        }
+    });
+})
+
+var classid = '';
+var key = '';
+var type='';
+/*var ToPage = function (pageIndex) {
+	var html_start=$("#html_start").val();
+	var html_end=$("#html_end").val();
+	var pageclass=$("#pageClass").val();
+	var pagesize=$("#pagesize").val();
+	var updatetime=$("#updatetime").val();
+	var listhtml=$("#listhtml").val();
+	var pagehtml=$("#pagehtml").val();
+    $.ajax({
+        type: "post",
+        url: "../index.php?a=search",
+        data: {
+            pageindex: pageIndex,
+            pagesize: pagesize,
+            key: key,
+			type: type,
+			html_start: html_start,
+			html_end: html_end,
+			pageclass: pageclass,
+			updatetime: updatetime,
+			listhtml: listhtml,
+			pagehtml: pagehtml
+        },
+        success: function (msg) {
+            var obj = eval('(' + msg + ')');
+            $('#AjaxList').html(obj.ListHtml.toString());
+            $('#AjaxPageList').html(obj.PageHtml.toString());
+			
+			$('#SearchNum').html(obj.RecordCount);
+           // $('#search-field').val(key);
+            $('#formd_search_id').val(key);
+            $('#searchText').html('"'+key+'"');
+			$('#formd_search_id1').val(key);
+        }
+    })
+}
+*/
+var ToPage = function (pageIndex) {
+	var html_start=$("#html_start").val();
+	var html_end=$("#html_end").val();
+	var pageclass=$("#pageClass").val();
+	var pagesize=$("#pagesize").val();
+	var updatetime=$("#updatetime").val();
+	var listhtml=$("#listhtml").val();
+	var pagehtml=$("#pagehtml").val();
+    $.ajax({
+        type: "post",
+        url: "../index.php?a=qwsearch",
+        data: {
+            pageindex: pageIndex,
+            pagesize: pagesize,
+            key: key,
+			type: type,
+			html_start: html_start,
+			html_end: html_end,
+			pageclass: pageclass,
+			updatetime: updatetime,
+			listhtml: listhtml,
+			pagehtml: pagehtml
+        },
+        success: function (msg) {
+            var obj = eval('(' + msg + ')');
+            $('#AjaxList').html(obj.ListHtml.toString());
+            $('#AjaxPageList').html(obj.PageHtml.toString());
+			
+			$('#SearchNum').html(obj.RecordCount);
+           // $('#search-field').val(key);
+            //$('#formd_search_id').val(key);
+            //$('#searchText').html('"'+key+'"');
+			//$('#formd_search_id1').val(key);
+        }
+    })
+}
+
+function SetMyCollect(id,url,photo){
+	$.ajax({
+        type: "post",
+        url: "../index.php?a=history",
+        data: {
+            id: id,
+            url: url,
+            photo: photo
+        },
+        success: function (msg) {
+            
+        }
+    })	
+}
+
+function getMyCollect() {
+    $.ajax({
+        type: "post",
+        url: "../index.php?a=gethistory",
+        data:"",
+        success: function (msg) {
+            var obj = eval('(' + msg + ')');
+            $('#GetMyCollect').html(obj.ListHtml);
+            if($(".style_l ol li").size()>2){
+
+            }else if($(".style_l ol li").size()==2){
+                $(".style_dot span:eq(2)").hide();
+            }else if($(".style_l ol li").size()==0|$(".style_l ol li").size()==1){
+                $('.style_dot span').hide();
+            }
+        }
+    })	
+}
+
+function getHumanity(pageindex) {
+    console.log(pageindex);
+    $.ajax({
+        type: "post",
+        url: "../index.php?a=gethumanity",
+        data: {
+            pageindex: pageindex
+        },
+        success: function (msg) {
+            var obj = eval('(' + msg + ')');
+			
+				$('#ajaxList').html(obj.ListHtml);
+				$("#AjaxPageList").html(obj.PageHtml);
+				if ($(".phone_menu").is(":hidden")) {
+					$(".our_main_box").height($(".our_main_box").width() * 0.438);
+					$(".our_main_box").each(function () {
+						var getOurMainSize = $(this).find("li").size() + 1;
+						var getOurMainWidth = Math.floor($(".other_main").width());
+						var getEq=Math.floor(getOurMainWidth / getOurMainSize);
+						var ourMainThis = $(this);
+						$(this).find("li").width(getEq);
+						$(this).find("li").eq(0).width(getEq * 2).addClass("on");
+						//$(this).find("ul").width(getEq);
+						$(this).find("li").hover(function () {
+						    var nIndex = $(this).index();
+						    var getThis = $(this);
+							$(this).removeClass().addClass("on").siblings().removeClass();
+							$(this).stop().animate({ "width": getEq * 2 }, {
+							    easing: 'easeInQuint', duration: 600, complete: function () {
+							        if ($(window).width() <= 1366 && (!!('ontouchend' in document) || navigator.userAgent.indexOf('Windows Phone') > 0)) {
+                                        getThis.find(".our_main_box_wrap").parent().attr("href", getThis.find(".our_main_box_wrap").parent().attr("data-href")).removeAttr("target");
+                                        getThis.find(".our_main_box_wrap a").attr("href", getThis.find(".our_main_box_wrap").parent().attr("data-href")).removeAttr("target");
+                                    }
+							    }
+							});
+							$(this).siblings().stop().animate({ "width": getEq }, {
+							    easing: 'easeInQuint', duration: 600, complete: function () {
+							        if ($(window).width() <= 1366 && (!!('ontouchend' in document) || navigator.userAgent.indexOf('Windows Phone') > 0)) {
+                                        getThis.siblings().find(".our_main_box_wrap").parent().attr("href", "javascript:void(0)").removeAttr("target");
+                                        getThis.siblings().find(".our_main_box_wrap a").attr("href", "javascript:void(0)").removeAttr("target");
+							        }
+							    }
+							});
+							ourMainThis.find("dd").eq(nIndex).stop().animate({ "opacity": 1 }, { easing: 'easeInSine', duration: 600 });
+							ourMainThis.find("dd").eq(nIndex).siblings().stop().animate({ "opacity": 0 }, { easing: 'easeInSine', duration: 600 });
+						})
+						//$(this).find("")
+					})
+                    if($(window).width()<=1366 && (!!('ontouchend' in document) || navigator.userAgent.indexOf('Windows Phone') > 0)){
+                        $(".our_main li").each(function(){
+                            var nIndexName=$(this).find("h4").text();
+                            $(this).find("h4").html("");
+                            var nIndexHref=$(this).find("a:eq(0)").attr("href");
+                            //console.log(nIndexHref);
+                            $(this).find("h4").append("<a href='javascript:void(0)' target='_blank'>"+nIndexName+"</a>");
+                            $(this).find(".our_main_box_wrap").parent().attr("href", "javascript:void(0)").attr("data-href", nIndexHref).removeAttr("target");
+                            $(this).find("h4 a").removeAttr("target");
+                            if($(this).hasClass("on")){
+                                $(this).find(".our_main_box_wrap").parent().attr("href", $(this).find(".our_main_box_wrap").parent().attr("data-href")).removeAttr("target");
+                                $(this).find(".our_main_box_wrap a").attr("href", $(this).find(".our_main_box_wrap").parent().attr("data-href")).removeAttr("target");
+                            }
+                        })
+
+                    }
+				} else {
+	
+					var getourboxSize = $(".our_main_box").size();
+					$(".our_main_box").each(function (i) {
+						$('.our_main_part' + i + ' dl').bxSlider({
+	
+						});
+					})
+	
+				}
+			}
+        
+    })	
+	
+    
+}
+var isLoadData=false;
+$(document).on('scroll', function () {
+    if ($(document).scrollTop() >= $(document).height() - $(window).height()) {		
+        if (Number($('#moreFlye').attr('data-next')) < Number($('#moreFlye').attr('data-max'))+1&&!isLoadData) {
+			isLoadData=true;
+            getList_FC1(Number($('#moreFlye').attr('data-next')));
+        }
+    }
+    
+});
+
+$(document).on("click","#moreFlye",function(){
+    if (Number($('#moreFlye').attr('data-next')) < Number($('#moreFlye').attr('data-max'))+1&&!isLoadData) {
+        isLoadData=true;
+        getList_FC1(Number($('#moreFlye').attr('data-next')));
+    }
+})
+
+$(function(){
+	$("#selectArea dd").click(function () {
+	   $('#ajaxList').html('');
+       getList_FC1(1);
+	})
+	$("#selectbut").click(function(){
+		$('#ajaxList').html('');
+		getList_FC1(1);	
+	})
+})
+
+
+function getList_FC1(pageindex){
+	var area=$(".style_select em").attr("value");
+	var key=$("#selecttxt").val();
+	data="area="+area+"&key="+key+"&pagesize=4&pageindex="+pageindex;
+	$.ajax({
+        type: "post",
+        url: "../index.php?a=getListfc",
+        data:data,
+        success: function (msg) {
+            var obj = eval('(' + msg + ')');
+			if(obj.country==1){
+				$(".ph_table .t1").html("国家");	
+				$(".ph_table .t2").html("城市");	
+			}else{
+                $(".ph_table .t1").html("省份");
+                $(".ph_table .t2").html("城市");
+			}
+            $('#ajaxList').append(obj.ListHtml);
+            var intval = Number(pageindex) + Number(1);
+
+            if (Number(intval) <= Number(obj.pagecount)) {                
+                $('#more').html("<a href=\"'javascript:getList_FC1(" + intval + ")" + "\" data-max=\"" + obj.pagecount + "\"></a>")
+                $('#moreFlye').attr('data-next', intval).attr('data-max', obj.pagecount).show();
+            } else {
+                 $('#more').html("");
+                 $('#moreFlye').attr('data-next', intval).attr('data-max', obj.pagecount).hide();
+
+            }
+			 try {
+
+                    $(".global_imgcase").each(function (i) {
+                        $(".group" + i).colorbox({ rel: 'group' + i });
+                    })
+                } catch (e) {
+
+                }
+				isLoadData=false;
+        }
+    })	
+}
+
+
+$(document).on('click', '.Mylike', function () {
+	var userid=$("#public_userid").val();
+	if(userid>0){
+		var strid = $(this).attr("data-id");//ID
+		var strurl =$(this).attr("data-url");
+		var stremid = $(this).parents('.AForm').find('.Mylikelist');
+		var objMylike = $(this);
+		data = "id=" + strid;
+		
+		
+		$.ajax({
+			type: "post",
+			url: "../index.php?a=downloadnum",
+			data:data,
+			success: function (msg) {
+				var obj = eval('(' + msg + ')');
+				if(obj.status==1){
+				stremid.text(Number(stremid.text()) + Number(1));
+				window.location = "" + strurl;
+				}
+			}
+		})
+	}else{
+		//alert('请先登录会员再下载！');
+		$(".login_a").click();
+		return false;
+	}
+});
+
+
+$(function () {
+    var ids = '';
+    $('.Mylikelist').map(function () {
+        ids += $(this).attr('data-id') + ',';
+    });
+	
+    if (ids.length == 0) {
+        return;
+    }
+    data="ids="+ids;
+	
+	
+	$.ajax({
+        type: "post",
+        url: "../index.php?a=getdownloadnum",
+        data:data,
+        success: function (msg) {
+            var obj = eval('(' + msg + ')');
+			var hits=(obj.info);
+			for (var i = 0; i < hits.split(',').length; i++) {
+	            $('.Mylikelist').eq(i).text(hits.split(',')[i]);
+	        }
+        }
+    })
+	
+    
+});
+
+
+/*----------------------当前位置定位-------------------*/
+$(function () {
+	
+    var MenuName = $.trim($("div.other_main>div.site>div.site_wrap a:eq(1)").text());
+ 
+    $('div.header_c>ul>li>a').map(function () {
+        if ($.trim($(this).text()) == MenuName) {
+            $(this).parent().addClass('on').siblings().removeClass('on');
+        }
+    });
+
+    MenuName = $.trim($("div.other_main>div.site>div.site_wrap span").text());
+
+    $('div.header_c>ul>li>a').map(function () {
+        if ($.trim($(this).text()) == MenuName) {
+            $(this).parent().addClass('on').siblings().removeClass('on');
+        }
+    });
+    
+    MenuName = $.trim($("div.Mydw span").text());
+    
+    $('div.header_c>ul>li>a').map(function () {
+        if ($.trim($(this).text()) == MenuName) {
+            $(this).parent().addClass('on').siblings().removeClass('on');
+        }
+    });
+
+   
+    
+})
+
+
+
+
+
+
+
+
+
+
+
+
+	

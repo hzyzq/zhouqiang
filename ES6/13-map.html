@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        var obj={
+            a:1,
+            b:2
+        }
+        var personA={
+            name:'lc',
+            age:30
+        }
+        obj[personA]="web1";
+        console.log(obj);
+
+        var m=new Map();
+        m.set('a',1);
+        m.set('b',2);
+        m.set(personA,'web1');
+        console.log(m);
+
+
+var m2=new Map([['name','lc'],['age',30],['sex','man']]);
+m2.set('address','南昌');
+var t2=m2.get('age');
+var t3=m2.delete('abc');
+console.log(m2);
+console.log(t3);
+
+    </script>
+</body>
+</html>

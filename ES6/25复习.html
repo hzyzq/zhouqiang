@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>复习面向对象</title>
+</head>
+<body>
+    <script>
+        /* let obj={}
+        let obj={} */
+
+        /* let obj=new Object();
+        obj.name=""
+
+        let obj=new Object();
+        obj.name="" */
+//工厂模式-面向对象
+        /* function Fn(name,age,sex){
+            let obj=new Object();
+            obj.name=name
+            obj.age=age
+            obj.sex=sex
+            return obj;
+        }
+        let zs=Fn('zs',30,'woman');
+        let ls=Fn('ls',40,'woman'); */
+//构造函数-面向对象
+        /* function Fn(name,age,sex){
+            //let obj=new Object();
+            this.name=name
+            this.age=age
+            this.sex=sex
+            this.sayName=function(){}
+            //return obj;
+        }
+        let zs=new Fn('zs',30,'woman');
+        let ls=new Fn('ls',40,'woman');
+        console.log(zs.name===ls.name);
+        console.log(zs.sayName===ls.sayName); */
+
+//原型模式
+        /* function Fn(name,age,sex){
+            Fn.prototype.name=name;
+            Fn.prototype.age=age;
+            Fn.prototype.sex=sex;
+        } 
+        let zs=new Fn('zs',30,'man');
+        let ls=new Fn('ls',40,'woman');
+        console.log(zs.name===ls.name);
+        console.log(zs.sayName===ls.sayName);
+
+        console.log(zs.name)
+        console.log(ls.name) */
+
+//组合模式
+        /* function Fn(name,age,sex){
+            this.name=name;
+            this.age=age;
+            this.sex=sex;
+        }
+        Fn.prototype.sayName=function(){} 
+        let zs=new Fn('zs',30,'man');
+        let ls=new Fn('ls',40,'woman');
+        console.log(zs.name===ls.name);
+        console.log(zs.sayName===ls.sayName);
+        console.log(zs.name)
+        console.log(ls.name) */
+//原型链
+        function Fn(name,age,sex){
+            this.name=name;
+            this.age=age;
+            this.sex=sex;
+        }
+        //Fn.prototype.sayName=function(){} 
+        let zs=new Fn('zs',30,'man');
+        let ls=new Fn('ls',40,'woman');
+        console.log(zs.name===ls.name);
+        console.log(zs.sayName===ls.sayName);
+        console.log(zs.name)
+        console.log(ls.name)
+
+        console.log(zs.__proto__=== Fn.prototype);
+        console.log(zs.__proto__);
+        console.log(Fn.prototype);
+        console.log(Fn.prototype.constructor);
+        console.log(Fn.prototype.__proto__);
+
+        //Fn.prototype={constructor:Fn,sayName:f}
+
+        /* Fn={
+            prototype:{
+                constructor:Fn,
+                hasOwnproperty:function(){}
+            },
+            hasOwnproperty:function(){},
+            constructor:?
+        }
+        zs.__proto__={
+                constructor:Fn     
+        }
+        zs={
+
+        } */
+    </script>
+</body>
+</html> 

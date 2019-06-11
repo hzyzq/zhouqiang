@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        var a=[1,2,3];
+        /* var c=a;
+        c.push(4);
+        console.log(a);
+        console.log(c); */
+        //...a//1,2,3
+        var b=[...a];
+        b.push(4);
+        console.log(a);
+        console.log(b);
+
+
+        var obj1={a:1,b:2,c:3}
+        //...obj1//a:1,b:2,c:3
+        var obj2={...obj1};
+
+
+        /* let arr=[1,2,3];
+        function fn(x,y,z){
+
+        }
+        fn(arr[0],arr[1],arr[2]) */
+    </script>
+</body>
+</html>

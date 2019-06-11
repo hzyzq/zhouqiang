@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>for in  for of</title>
+</head>
+<body>
+    <script>
+        var arr=['a','b','c'];
+        for(var i=0; i<arr.length; i++){
+            console.log(arr[i]);
+        }
+        for(i in arr){
+            console.log(arr[i]);
+        }
+        var obj={
+            a:1,
+            b:2,
+            c(){1+2}
+        }
+        for(key in obj)
+        {
+            console.log(key+":"+obj[key]);
+        }
+        console.log(Object.keys(obj));
+        console.log(Object.values(obj));
+
+    let m=new Map([['name','lc'],['age',30],['sex','man']]);
+    //console.log(m);
+    /* for(var i=0; i<m.size; i++){
+
+    } */
+    for(v of m){
+        console.log(v[1]);
+    }
+
+
+
+    var sz=[];
+    sz['a1b']=10;
+    sz['seb']=20;
+    for(k in sz){
+        console.log(sz[k]);
+    }
+    for(var i=0; i<sz.length; i++)
+    {
+        console.log(sz[i]);
+    }
+    </script>
+</body>
+</html>

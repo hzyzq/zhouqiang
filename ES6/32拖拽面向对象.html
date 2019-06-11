@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>拖拽的面向对象</title>
+    <style>
+        #box1{width: 100px;height: 100px;background: red; position:absolute;left:100px; top:100px;}
+        #box2{width: 100px;height: 100px;background: green; position:absolute;left:200px; top:200px;}
+    </style>
+</head>
+<body>
+    aaaa
+    <div id="box1"></div>
+    <div id="box2"></div>
+    <script>
+    //getComputedStyle()   currentStyle
+        /* let oDiv=document.getElementById("box1");
+        let disx=0;
+        let disy=0;
+        oDiv.onmousedown=(ev)=>{
+            disx=ev.clientX-oDiv.offsetLeft;
+            disy=ev.clientY-oDiv.offsetTop;
+            document.onmousemove=(ev)=>{
+               oDiv.style.left=ev.clientX-disx+"px"; 
+               oDiv.style.top=ev.clientY-disy+"px"; 
+            }
+            document.onmouseup=()=>{
+                document.onmousemove=null;
+                document.onmouseup=null;
+            }
+            return false;
+        } */
+//---------------------------------------------
+        /* function Drag(box){
+            this.oDiv=document.getElementById(box);
+            this.disx=0;
+            this.disy=0;
+        }
+        Drag.prototype.fnDown=function(){
+            this.oDiv.onmousedown=(ev)=>{
+                this.disx=ev.clientX-this.oDiv.offsetLeft;
+                this.disy=ev.clientY-this.oDiv.offsetTop;
+                document.onmousemove=(ev)=>{
+                this.oDiv.style.left=ev.clientX-this.disx+"px"; 
+                this.oDiv.style.top=ev.clientY-this.disy+"px"; 
+                }
+                document.onmouseup=()=>{
+                    document.onmousemove=null;
+                    document.onmouseup=null;
+                }
+                return false;
+            }
+        }
+        let d1=new Drag("box1");
+        d1.fnDown(); */
+
+        /* function LimitDarg(box){
+            Drag.call(this,box);
+        }
+        for(k in Drag.prototype){
+            LimitDarg.prototype[k]=Drag.prototype[k];
+        }
+        LimitDarg.prototype.fnDown=function(){
+            this.oDiv.onmousedown=(ev)=>{
+                this.disx=ev.clientX-this.oDiv.offsetLeft;
+                this.disy=ev.clientY-this.oDiv.offsetTop;
+                document.onmousemove=(ev)=>{
+                    let l=ev.clientX-this.disx;
+                    let t=ev.clientY-this.disy;
+                    if(l<0){l=0;}
+                    //if(l>可视区宽-自身宽){l=可视区宽-自身宽}
+      if(l>document.documentElement.clientWidth-this.oDiv.offsetWidth){l=document.documentElement.clientWidth-this.oDiv.offsetWidth}
+                    if(t<0){t=0;}
+    if(t>document.documentElement.clientHeight-this.oDiv.offsetHeight){t=document.documentElement.clientHeight-this.oDiv.offsetHeight}              
+                    this.oDiv.style.left=l+"px"; 
+                    this.oDiv.style.top=t+"px"; 
+                }
+                document.onmouseup=()=>{
+                    document.onmousemove=null;
+                    document.onmouseup=null;
+                }
+                return false;
+            }
+        }
+        let d2=new LimitDarg("box2");
+        d2.fnDown(); */
+//------------------------------------------
+
+//父类
+        function Drag(box){
+            this.oDiv=document.getElementById(box);
+            this.disx=0;
+            this.disy=0;
+        }
+        Drag.prototype.fnDown=function(){
+            this.oDiv.onmousedown=(ev)=>{
+                this.disx=ev.clientX-this.oDiv.offsetLeft;
+                this.disy=ev.clientY-this.oDiv.offsetTop;
+                document.onmousemove=(ev)=>{
+                    this.fnMove(ev)
+                }
+                document.onmouseup=()=>{
+                    document.onmousemove=null;
+                    document.onmouseup=null;
+                }
+                return false;
+            }
+        }
+        Drag.prototype.fnMove=function(ev){
+            this.oDiv.style.left=ev.clientX-this.disx+"px"; 
+            this.oDiv.style.top=ev.clientY-this.disy+"px"; 
+        }
+        let d1=new Drag("box1");
+        d1.fnDown();
+//子类
+        function LimitDarg(box){
+            Drag.call(this,box)
+        }
+        for(k in Drag.prototype){
+            LimitDarg.prototype[k]=Drag.prototype[k]
+        }
+
+        let d2=new LimitDarg("box2");
+        LimitDarg.prototype.fnMove=function(ev){
+            let l=ev.clientX-this.disx;
+            let t=ev.clientY-this.disy;
+      if(l<0){l=0;}
+      if(l>document.documentElement.clientWidth-this.oDiv.offsetWidth){l=document.documentElement.clientWidth-this.oDiv.offsetWidth}
+
+      if(t<0){t=0;}
+      if(t>document.documentElement.clientHeight-this.oDiv.offsetHeight){t=document.documentElement.clientHeight-this.oDiv.offsetHeight}            
+            this.oDiv.style.left=l+"px"; 
+            this.oDiv.style.top=t+"px"; 
+        }
+        d2.fnDown();
+    </script>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script src="./vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        {{msg}}
+        <p v-text="msg"></p>
+    </div>
+    <script type="x-template" id="test">
+        <div>
+            pppp
+        </div>
+    </script>
+    <script>
+        var vm = new Vue({
+            el:'#app',
+            data:()=>({
+                msg:"hello",
+                bg:"green"
+            }),
+            template:`#test`,
+            render:function(h){
+               let v=h(
+                    "ul",
+                    {
+                        class:{
+                            'tt':true  
+                            },
+                            style:{
+                                background:this.bg
+                            }, 
+                        domProps:{//property
+                            id:'cc',
+                            title:'qq'
+                        },
+                        attrs:{//attribute
+                            href:"#a",
+                            id:"aa",
+                            rel:"abc"
+                        }
+                    },
+                    [
+                        h('li',{
+                            attrs:{
+                                id:"bb"
+                            }
+                        },['11111']),
+                        h('li',['22222']),
+                        h('li',['33333']),
+                    ]
+                );
+                console.log(v);
+                return v;
+            }
+        });
+    </script>
+</body>
+</html>

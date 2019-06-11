@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        class A{
+            constructor(name){
+                this.name=name;
+            }
+            static s=function(){
+                console.log('A的静态方法')
+            }
+            sayName(){
+                console.log(this.name);
+            }
+        }
+        let a=new A('lc');
+        a.sayName();
+
+
+        class B extends A{
+            constructor(name,job){
+                super(name)
+                this.job=job;
+            }
+            sayName(){
+                console.log('aaaaaaaaa')
+            }
+        }
+        let b=new B('zs','coder');
+        console.log(b.name);
+        console.log(b.job);
+        b.sayName();
+        B.s();
+    </script>
+</body>
+</html>
